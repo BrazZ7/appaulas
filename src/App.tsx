@@ -1,0 +1,90 @@
+import { lazy, Suspense } from 'react';
+import { createHashRouter, Link, RouterProvider } from 'react-router-dom';
+import { Layout } from './components/Layout';
+import Home from './pages/Home';
+
+const Library = lazy(() => import('./pages/Library'));
+const SubjectPage = lazy(() => import('./pages/Library').then((m) => ({ default: m.SubjectPage })));
+const SearchPage = lazy(() => import('./pages/SearchPage'));
+const Immersions = lazy(() => import('./pages/Immersions'));
+const ImmersionPage = lazy(() => import('./pages/Immersions').then((m) => ({ default: m.ImmersionPage })));
+const Stories = lazy(() => import('./pages/Stories'));
+const StoryPlayer = lazy(() => import('./pages/Stories').then((m) => ({ default: m.StoryPlayer })));
+const Games = lazy(() => import('./pages/Games'));
+const GameRoom = lazy(() => import('./pages/GameRoom'));
+const Feira = lazy(() => import('./pages/Feira'));
+const Lab = lazy(() => import('./pages/Lab'));
+const City = lazy(() => import('./pages/City'));
+const Training = lazy(() => import('./pages/Training'));
+const TrainingPage = lazy(() => import('./pages/Training').then((m) => ({ default: m.TrainingPage })));
+const Studio = lazy(() => import('./pages/Studio'));
+const Lessons = lazy(() => import('./pages/Planner'));
+const LessonView = lazy(() => import('./pages/Planner').then((m) => ({ default: m.LessonView })));
+const LessonEditor = lazy(() => import('./pages/LessonEditor'));
+const LessonApply = lazy(() => import('./pages/LessonApply'));
+const LessonPrint = lazy(() => import('./pages/LessonPrint'));
+const Classes = lazy(() => import('./pages/Classes'));
+const ClassPage = lazy(() => import('./pages/ClassPage'));
+const Calendar = lazy(() => import('./pages/Calendar'));
+const ProjectPage = lazy(() => import('./pages/ProjectPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
+const Student = lazy(() => import('./pages/Student'));
+const StudentPortfolio = lazy(() => import('./pages/Student').then((m) => ({ default: m.StudentPortfolio })));
+const Coordination = lazy(() => import('./pages/Coordination'));
+
+function NotFound() {
+  return (
+    <div className="empty">
+      <h2>Página não encontrada</h2>
+      <p>O endereço pode ter mudado.</p>
+      <Link className="btn primary" to="/">Voltar ao início</Link>
+    </div>
+  );
+}
+
+const wrap = (el: React.ReactNode) => <Suspense fallback={<div className="muted" style={{ padding: 30 }}>Carregando…</div>}>{el}</Suspense>;
+
+const router = createHashRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    errorElement: <NotFound />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'materias', element: wrap(<Library />) },
+      { path: 'materias/:id', element: wrap(<SubjectPage />) },
+      { path: 'busca', element: wrap(<SearchPage />) },
+      { path: 'imersoes', element: wrap(<Immersions />) },
+      { path: 'imersoes/:id', element: wrap(<ImmersionPage />) },
+      { path: 'historias', element: wrap(<Stories />) },
+      { path: 'historias/:id', element: wrap(<StoryPlayer />) },
+      { path: 'jogos', element: wrap(<Games />) },
+      { path: 'jogos/:id', element: wrap(<GameRoom />) },
+      { path: 'simulacoes/feira', element: wrap(<Feira />) },
+      { path: 'laboratorio', element: wrap(<Lab />) },
+      { path: 'cidade', element: wrap(<City />) },
+      { path: 'formacao', element: wrap(<Training />) },
+      { path: 'formacao/:id', element: wrap(<TrainingPage />) },
+      { path: 'estudio', element: wrap(<Studio />) },
+      { path: 'aulas', element: wrap(<Lessons />) },
+      { path: 'aulas/nova', element: wrap(<LessonEditor />) },
+      { path: 'aulas/:id', element: wrap(<LessonView />) },
+      { path: 'aulas/:id/editar', element: wrap(<LessonEditor />) },
+      { path: 'aulas/:id/aplicar', element: wrap(<LessonApply />) },
+      { path: 'aulas/:id/imprimir', element: wrap(<LessonPrint />) },
+      { path: 'turmas', element: wrap(<Classes />) },
+      { path: 'turmas/:id', element: wrap(<ClassPage />) },
+      { path: 'calendario', element: wrap(<Calendar />) },
+      { path: 'projetos/:id', element: wrap(<ProjectPage />) },
+      { path: 'ajustes', element: wrap(<SettingsPage />) },
+      { path: 'aluno', element: wrap(<Student />) },
+      { path: 'aluno/portfolio', element: wrap(<StudentPortfolio />) },
+      { path: 'coordenacao', element: wrap(<Coordination />) },
+      { path: '*', element: <NotFound /> },
+    ],
+  },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}
