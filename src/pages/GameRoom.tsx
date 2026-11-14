@@ -430,7 +430,7 @@ function GameRoomInner({ id }: { id?: string }) {
         <div className="split">
           <div className="stack">
             <section className="panel" style={{ padding: 0, overflow: 'hidden' }}>
-              <Art id={g.artId} ratio={21 / 8} decorative />
+              <Art id={g.artId} ratio={21 / 8} decorative sizes="(max-width: 760px) 85vw, 900px" />
               <div style={{ padding: 20 }}>
                 <p>{g.description}</p>
                 <h3>Instruções para a turma</h3>

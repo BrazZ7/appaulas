@@ -96,7 +96,7 @@ export function ImmersionPage() {
       <div className="split">
         <div className="stack">
           <section className="panel" style={{ padding: 0, overflow: 'hidden', position: 'relative' }} aria-label="Cena da imersão">
-            <Art id={imm.artId} ratio={16 / 8} eager />
+            <Art id={imm.artId} ratio={16 / 8} eager sizes="(max-width: 760px) 85vw, 900px" />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(6,10,34,.75) 0%, rgba(6,10,34,0) 40%, rgba(6,10,34,.9) 100%)', pointerEvents: 'none' }} />
             <div style={{ position: 'absolute', top: 20, left: 24, right: 24 }}>
               <h2 style={{ fontSize: 'clamp(1.3rem,2.4vw,2.2rem)', margin: 0 }}>{ch ? ch.title : imm.title}</h2>

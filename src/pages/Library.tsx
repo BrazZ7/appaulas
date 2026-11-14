@@ -155,7 +155,7 @@ export default function Library() {
               <div key={p.id} className="stack-sm">
                 <span className="badge" style={{ alignSelf: 'flex-start' }}>Missão interdisciplinar</span>
                 <h3 style={{ fontSize: '1.4rem' }}>{p.title}</h3>
-                <Art id={p.artId} ratio={16 / 9} style={{ borderRadius: 14 }} />
+                <Art id={p.artId} ratio={16 / 9} style={{ borderRadius: 14 }} sizes="(max-width: 760px) 85vw, 360px" />
                 <div className="row" style={{ gap: 6 }}>{p.subjects.map((sid) => <span key={sid} className="chip xs" style={{ padding: '3px 9px' }}>{SUBJECT_MAP[sid].name}</span>)}</div>
                 <p className="small muted">{p.summary}</p>
                 <div className="row">

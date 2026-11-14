@@ -114,7 +114,7 @@ export function StoryPlayer() {
       <div className="split">
         <div className="stack">
           <section className="panel" style={{ padding: 0, overflow: 'hidden', position: 'relative' }}>
-            <Art id={scene.artId ?? story.artId} ratio={16 / 8} eager />
+            <Art id={scene.artId ?? story.artId} ratio={16 / 8} eager sizes="(max-width: 760px) 85vw, 900px" />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(6,10,34,0) 45%, rgba(6,10,34,.92))', pointerEvents: 'none' }} />
             <h2 style={{ position: 'absolute', left: 24, bottom: 14, right: 24, fontSize: 'clamp(1.4rem,2.6vw,2.3rem)', margin: 0, textShadow: '0 2px 14px #000' }}>{scene.title}</h2>
           </section>

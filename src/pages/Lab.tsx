@@ -57,7 +57,7 @@ function Experiment() {
       <div className="grid" style={{ gridTemplateColumns: 'minmax(0,1.4fr) minmax(0,1fr)', gap: 16 }} id="lab-grid">
         <div className="stack">
           <div className="panel" style={{ padding: 0, overflow: 'hidden' }}>
-            <Art id="sim-lab" ratio={16 / 10} />
+            <Art id="sim-lab" ratio={16 / 10} sizes="(max-width: 760px) 85vw, 900px" />
           </div>
           <div className="grid g3">
             <Gauge value={r.energia} label="Energia" status={r.labels.energia} icon={<Zap size={18} color="var(--cyan)" />} color="#2ee6d6" />

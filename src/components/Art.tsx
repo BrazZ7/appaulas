@@ -51,8 +51,8 @@ export function Art({ id, ratio, className = '', style, decorative, fill, eager,
           {def.hasMobile && fill && <source media="(max-width: 760px)" srcSet={`${base}${id}-mobile.webp`} />}
           <img
             src={`${base}${def.file}`}
-            srcSet={`${base}${id}-sm.webp 640w, ${base}${def.file} ${fullWidth(def.ratio)}w`}
-            sizes={sizes ?? (fill ? '100vw' : '(max-width: 760px) 100vw, 420px')}
+            srcSet={`${base}${id}-sm.webp 640w, ${base}${id}-md.webp 1024w, ${base}${def.file} ${fullWidth(def.ratio)}w`}
+            sizes={sizes ?? (fill ? '100vw' : '(max-width: 760px) 50vw, 420px')}
             alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" onError={() => setFailed(true)} />
         </picture>
       </div>
