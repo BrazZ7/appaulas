@@ -259,6 +259,7 @@ select.input option { background: #141c4e; }
 
 /* ─────────── Arte / imagens provisórias ─────────── */
 .art { position: relative; overflow: hidden; border-radius: inherit; isolation: isolate; background: #10163f; }
+.art picture { display: block; width: 100%; height: 100%; }
 .art img { width: 100%; height: 100%; object-fit: cover; }
 .art-ph { position: absolute; inset: 0; }
 .art-ph svg { position: absolute; inset: 0; display: block; }
@@ -337,7 +338,7 @@ table.data th { color: var(--muted); font-weight: 700; font-size: 0.8rem; text-t
   .auto-fill-sm { grid-template-columns: 1fr 1fr; gap: 10px; }
   .hero { min-height: 0; flex-direction: column; }
   .hero .art { position: relative; aspect-ratio: 16/9; }
-  .hero-content { padding: 18px; background: none; max-width: none; }
+  .hero-content { padding: 18px; max-width: none; background: linear-gradient(0deg, rgba(6, 10, 34, 0.96) 35%, rgba(6, 10, 34, 0.55) 100%); }
   .panel { padding: 16px; border-radius: 16px; }
   .btn.lg { padding: 13px 20px; }
   .mobile-only { display: initial; }

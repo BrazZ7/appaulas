@@ -113,5 +113,8 @@ export const ASSETS: AssetDef[] = [
 
 export const ASSET_MAP: Record<string, AssetDef> = Object.fromEntries(ASSETS.map((a) => [a.id, a]));
 
-/** IDs cujos arquivos já existem em /public/assets. Adicione aqui ao receber as imagens. */
-export const AVAILABLE_ASSETS = new Set<string>([]);
+/**
+ * IDs cujos arquivos já existem em /public/assets (pacote de imagens recebido: todas as 64,
+ * com versões -mobile e -sm). Para desativar uma imagem, troque por uma lista explícita de ids.
+ */
+export const AVAILABLE_ASSETS = new Set<string>(ASSETS.map((a) => a.id));

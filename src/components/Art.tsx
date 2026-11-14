@@ -12,6 +12,8 @@ const MOTIF_ICON: Record<Motif, typeof BookOpen> = {
   video: Film, conversa: MessagesSquare, radio: Radio, robo: Bot, calendario: Calendar, montanha: Mountain,
 };
 
+const fullWidth = (r: number) => (r > 2 ? 2520 : r > 1.5 ? 1920 : 1200);
+
 const hash = (s: string) => { let h = 7; for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 10007; return h; };
 
 interface Props {
@@ -25,13 +27,15 @@ interface Props {
   fill?: boolean;
   eager?: boolean;
   showTag?: boolean;
+  /** Largura exibida, para o navegador escolher entre a versão pequena e a completa. */
+  sizes?: string;
 }
 
 /**
  * Exibe a imagem gerada (quando disponível) ou um cenário provisório elegante,
  * sempre com a proporção correta para não deslocar o layout quando a imagem chegar.
  */
-export function Art({ id, ratio, className = '', style, decorative, fill, eager, showTag }: Props) {
+export function Art({ id, ratio, className = '', style, decorative, fill, eager, showTag, sizes }: Props) {
   const def = ASSET_MAP[id];
   const [failed, setFailed] = useState(false);
   const r = ratio ?? def?.ratio ?? 16 / 9;
@@ -43,8 +47,13 @@ export function Art({ id, ratio, className = '', style, decorative, fill, eager,
     return (
       <div className={`art ${className}`} style={box}>
         <picture>
-          {def.hasMobile && <source media="(max-width: 760px)" srcSet={`${base}${id}-mobile.webp`} />}
-          <img src={`${base}${def.file}`} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" onError={() => setFailed(true)} />
+          {/* versão vertical recomposta só para cabeçalhos/capas que ocupam a tela no celular */}
+          {def.hasMobile && fill && <source media="(max-width: 760px)" srcSet={`${base}${id}-mobile.webp`} />}
+          <img
+            src={`${base}${def.file}`}
+            srcSet={`${base}${id}-sm.webp 640w, ${base}${def.file} ${fullWidth(def.ratio)}w`}
+            sizes={sizes ?? (fill ? '100vw' : '(max-width: 760px) 100vw, 420px')}
+            alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" onError={() => setFailed(true)} />
         </picture>
       </div>
     );
