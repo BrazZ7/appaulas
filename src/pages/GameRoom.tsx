@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import {
   ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Lightbulb, Monitor, Pause, Play, RotateCcw, Timer, Trophy, Users, X, Save,
 } from 'lucide-react';
+import { ItemIcon } from '../components/ItemIcon';
 import { Art } from '../components/Art';
 import { Bar, Notice, Switch, anosLabel, minutes, toast } from '../components/ui';
 import { GAME_ACTIVITIES, SUBJECT_MAP } from '../content';
@@ -165,7 +166,7 @@ function MemoryGame({ c, onResult, onDone, seed }: Ctl & { c: MemoryContent }) {
               style={{ minHeight: 110, cursor: 'pointer', color: 'var(--text)', display: 'grid', placeItems: 'center', textAlign: 'center', fontWeight: 700,
                 background: matched.includes(card.pairId) ? 'rgba(46,230,214,.16)' : up ? 'rgba(139,92,246,.28)' : 'linear-gradient(135deg, #1c2670, #3b1d7a)',
                 borderColor: matched.includes(card.pairId) ? 'var(--cyan)' : undefined }}>
-              {up ? card.text : <span aria-hidden style={{ fontSize: '1.8rem', opacity: 0.6 }}>✦</span>}
+              {up ? <>{card.face === 'a' && <img className="card-illustration" src={'/atividades/'+card.pairId+'.webp'} alt=""/>}{card.text}</> : <img className="card-illustration" src="/atividades/verso.webp" alt=""/>}
             </button>
           );
         })}
@@ -208,7 +209,7 @@ function SequenceGame({ c, onResult, onDone, seed }: Ctl & { c: SequenceContent 
             <li key={it.id} draggable onDragStart={() => setDrag(idx)} onDragOver={(e) => e.preventDefault()} onDrop={() => { if (drag !== null) move(drag, idx); setDrag(null); }}
               className="list-item" style={{ margin: 0, borderColor: result ? (ok ? 'var(--green)' : 'var(--red)') : undefined }}>
               <span className="badge num">{idx + 1}</span>
-              <div className="grow"><strong>{it.label}</strong>{result?.allCorrect && <div className="xs muted">{it.detail}</div>}</div>
+              <div className="grow"><ItemIcon id={it.id}/><strong>{it.label}</strong>{result?.allCorrect && <div className="xs muted">{it.detail}</div>}</div>
               {result && (ok ? <Check color="var(--green)" aria-label="posição correta" /> : <X color="var(--red)" aria-label="posição incorreta" />)}
               <button className="btn icon ghost" aria-label={`Subir ${it.label}`} onClick={() => move(idx, idx - 1)} disabled={idx === 0}><ArrowUp /></button>
               <button className="btn icon ghost" aria-label={`Descer ${it.label}`} onClick={() => move(idx, idx + 1)} disabled={idx === order.length - 1}><ArrowDown /></button>
@@ -264,7 +265,7 @@ function ClassifyGame({ c, onResult, onDone, seed }: Ctl & { c: ClassifyContent 
         <div>
           <span className="label">1. Escolham um item</span>
           <div className="row mt" style={{ marginTop: 8 }}>
-            {unplaced.map((it) => <button key={it.id} className={`chip ${sel === it.id ? 'on' : ''}`} aria-pressed={sel === it.id} onClick={() => setSel(it.id)} style={{ fontSize: '.95rem', padding: '8px 14px' }}>{it.label}</button>)}
+            {unplaced.map((it) => <button key={it.id} className={`chip ${sel === it.id ? 'on' : ''}`} aria-pressed={sel === it.id} onClick={() => setSel(it.id)} style={{ fontSize: '.95rem', padding: '8px 14px' }}><ItemIcon id={it.id}/>{it.label}</button>)}
           </div>
           <span className="label" style={{ display: 'block', marginTop: 12 }}>2. Coloquem na categoria</span>
         </div>

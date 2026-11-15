@@ -7,6 +7,8 @@ import { GAME_ACTIVITIES, PRESENTIAL_GAMES, SUBJECT_MAP } from '../content';
 import { FORMAT_LABEL } from '../engine/games';
 import type { GameFormat } from '../types/models';
 
+import scenes from '../content/diferencas.json';
+
 const FORMAT_DESC: Record<GameFormat, string> = {
   quiz: 'Respondam juntos e avancem na missão.',
   pistas: 'Sigam pistas, resolvam enigmas e “escapem”.',
@@ -61,6 +63,8 @@ export default function Games() {
         </aside>
       </div>
 
+      <section><h2>Jogo dos sete erros</h2><div className="grid auto-fill">{scenes.map(s=><Link className="card-link" key={s.id} to={'/sete-erros/'+s.id}>
+        <img loading="lazy" style={{width:'100%'}} src={'/atividades/'+s.id+'-a.webp'} alt=""/><div className="card-body"><h3>{s.title}</h3><span>Jogar ou imprimir →</span></div></Link>)}</div></section>
       <section aria-labelledby="modos">
         <div className="row between"><h2 id="modos"><Gamepad2 /> Modos de jogo</h2><span className="small muted">Escolha o formato da aventura com a sua turma.</span></div>
         <div className="grid auto-fill-sm">

@@ -122,7 +122,7 @@ export function StoryPlayer() {
           {last && <div className="feedback ok" role="status"><strong>Consequência:</strong> {last}</div>}
 
           <section className="panel stack anim-in" key={scene.id} aria-live="polite">
-            {speaker && <span className="badge" style={{ alignSelf: 'flex-start', background: `${speaker.color}33`, borderColor: speaker.color }}>{speaker.name}</span>}
+            {speaker && <span className="badge" style={{ alignSelf: 'flex-start', background: `${speaker.color}33`, borderColor: speaker.color }}><img className="portrait" src={'/atividades/'+speaker.id+'.webp'} alt=""/>{speaker.name}</span>}
             <div className="prose prose-lg" style={s.settings.readingLevel === 'ampliado' ? { fontSize: '1.35rem' } : undefined}>
               {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
             </div>
@@ -252,7 +252,7 @@ export function StoryPlayer() {
           </details>
           <details>
             <summary className="small" style={{ cursor: 'pointer', fontWeight: 700 }}>Personagens</summary>
-            <ul className="clean stack-sm mt">{story.characters.map((c) => <li key={c.id} className="small"><strong style={{ color: c.color }}>{c.name}</strong> — {c.description}</li>)}</ul>
+            <ul className="clean stack-sm mt">{story.characters.map((c) => <li key={c.id} className="small"><img className="portrait" src={'/atividades/'+c.id+'.webp'} alt=""/><strong style={{ color: c.color }}>{c.name}</strong> — {c.description}</li>)}</ul>
           </details>
         </aside>
       </div>

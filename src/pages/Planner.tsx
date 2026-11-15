@@ -57,7 +57,7 @@ export default function Lessons() {
         actions={can(role, 'lesson.create') && <Link className="btn primary" to="/aulas/nova"><Plus /> Criar aula</Link>} />
       <div className="row between">
         <div className="tabs" role="tablist" aria-label="Coleções" style={{ flex: '0 1 auto' }}>
-          {([['minhas', `Minhas aulas (${s.myLessons.length})`], ['biblioteca', `Biblioteca AulaViva (${LESSONS.length})`], ['escola', `Modelos da escola (${shared.length})`]] as const).map(([id, label]) => (
+          {([['minhas', `Minhas aulas (${s.myLessons.length})`], ['biblioteca', `Biblioteca Ensinaê (${LESSONS.length})`], ['escola', `Modelos da escola (${shared.length})`]] as const).map(([id, label]) => (
             <button key={id} role="tab" aria-selected={tab === id} onClick={() => setTab(id)}>{label}</button>
           ))}
         </div>
@@ -94,7 +94,7 @@ export function LessonView() {
             <div className="grid" style={{ gridTemplateColumns: 'minmax(0,300px) 1fr', gap: 0 }}>
               <Art id={l.artId} ratio={4 / 3} decorative className="desktop-only" />
               <div style={{ padding: 22 }} className="stack-sm">
-                <div className="row" style={{ gap: 6 }}><span className={`badge ${mine ? 'cyan' : ''}`}>{mine ? 'Minha aula' : 'Biblioteca AulaViva'}</span><span className="badge">{DIFF_LABEL[l.difficulty]}</span></div>
+                <div className="row" style={{ gap: 6 }}><span className={`badge ${mine ? 'cyan' : ''}`}>{mine ? 'Minha aula' : 'Biblioteca Ensinaê'}</span><span className="badge">{DIFF_LABEL[l.difficulty]}</span></div>
                 <h1 style={{ margin: 0 }}>{l.title}</h1>
                 <div className="row" style={{ gap: 8 }}>
                   {l.subjects.map((x) => <span key={x} className="chip xs">{SUBJECT_MAP[x]?.name}</span>)}

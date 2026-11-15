@@ -189,7 +189,7 @@ export default function Home() {
 
         <section className="panel" aria-labelledby="incl-t">
           <div className="panel-title"><Accessibility /><h2 id="incl-t" style={{ fontSize: '1.2rem' }}>Aprendizagem inclusiva</h2></div>
-          <p className="small muted">Ajustes aplicados em todo o AulaViva, inclusive no modo projetor.</p>
+          <p className="small muted">Ajustes aplicados em todo o Ensinaê, inclusive no modo projetor.</p>
           <div className="setting-row"><Type size={18} /><span>Fonte ampliada</span><Switch hideLabel label="Fonte ampliada" checked={st.fontScale > 1} onChange={(v) => actions.setSettings({ fontScale: v ? 1.15 : 1 })} /></div>
           <div className="setting-row"><Volume2 size={18} /><span>Texto simplificado</span><Switch hideLabel label="Texto simplificado" checked={st.readingLevel === 'simplificado'} onChange={(v) => actions.setSettings({ readingLevel: v ? 'simplificado' : 'padrao' })} /></div>
           <div className="setting-row"><Contrast size={18} /><span>Alto contraste</span><Switch hideLabel label="Alto contraste" checked={st.highContrast} onChange={(v) => actions.setSettings({ highContrast: v })} /></div>

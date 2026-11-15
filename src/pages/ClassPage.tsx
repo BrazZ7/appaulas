@@ -322,7 +322,7 @@ export default function ClassPage() {
       {tab === 'visao' && (
         <section className="panel">
           <h3>Atividades liberadas para o perfil Aluno</h3>
-          <p className="small muted">Escolha o que aparece quando alguém usa o AulaViva no perfil Aluno (no mesmo dispositivo ou nos dispositivos da escola com este navegador).</p>
+          <p className="small muted">Escolha o que aparece quando alguém usa o Ensinaê no perfil Aluno (no mesmo dispositivo ou nos dispositivos da escola com este navegador).</p>
           <div className="row">{releasable.map((r) => <button key={r.key} className={`chip ${s.released.includes(r.key) ? 'on' : ''}`} aria-pressed={s.released.includes(r.key)} onClick={() => actions.toggleRelease(r.key)}>{r.title}</button>)}</div>
         </section>
       )}

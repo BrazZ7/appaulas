@@ -38,6 +38,7 @@ const NAV_TEACHER = [
   { to: '/materias', label: 'Matérias', icon: Layers },
   { to: '/imersoes', label: 'Imersões', icon: Compass },
   { to: '/jogos', label: 'Jogos', icon: Gamepad2 },
+  { to: '/imprimiveis', label: 'Imprimíveis', icon: Library },
   { to: '/estudio', label: 'Estúdio', icon: Clapperboard },
   { to: '/turmas', label: 'Minhas turmas', icon: Users },
 ];
@@ -152,7 +153,7 @@ function ProfileMenu() {
           <strong>Modo demonstrativo:</strong> não há login nem servidor. Trocar de perfil apenas simula o que cada pessoa vê — não é um controle de acesso seguro.
         </p>
         <div className="stack">
-          <span className="label">Ver o AulaViva como</span>
+          <span className="label">Ver o Ensinaê como</span>
           <div className="row">
             {(['professor', 'aluno', 'coordenacao'] as Role[]).map((r) => (
               <button key={r} className={`chip ${s.user.role === r ? 'on' : ''}`} aria-pressed={s.user.role === r} onClick={() => setRole(r)}>
@@ -185,10 +186,10 @@ export function Layout() {
     <div className="app">
       <a href="#conteudo" className="skip-link" onClick={(e) => { e.preventDefault(); document.getElementById('conteudo')?.focus(); }}>Pular para o conteúdo</a>
       <aside className="sidebar" aria-label="Navegação principal">
-        <NavLink to={role === 'aluno' ? '/aluno' : '/'} className="brand" aria-label="AulaViva — início">
+        <NavLink to={role === 'aluno' ? '/aluno' : '/'} className="brand" aria-label="Ensinaê — início">
           <Logo />
           <span>
-            <span className="brand-name">Aula<b>Viva</b></span>
+            <span className="brand-name">Ensina<b>ê</b></span>
             <span className="brand-sub">para professores</span>
           </span>
         </NavLink>
