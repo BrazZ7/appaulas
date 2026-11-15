@@ -66,6 +66,7 @@ function useHtmlClasses() {
     h.classList.toggle('simple', settings.simpleMode);
     h.classList.toggle('reduce-motion', settings.reduceMotion);
     h.classList.toggle('contrast', settings.highContrast);
+    h.classList.toggle('print-color', !settings.inkSaver);
     h.style.setProperty('--fs', String(settings.fontScale));
   }, [settings]);
 }

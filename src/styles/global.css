@@ -408,3 +408,11 @@ html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after 
   .print-doc .lines { border-bottom: 1px solid #999 !important; height: 26px; }
   a { color: #111; text-decoration: none; }
 }
+/* Impressão colorida (quando “economia de tinta” está desligada): títulos e destaques em cor, fundo branco */
+html.print-color .print-doc { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html.print-color .print-doc h1 { color: #4c1d95 !important; }
+html.print-color .print-doc h2 { color: #0f766e !important; border-bottom: 3px solid #14b8a6 !important; background: linear-gradient(90deg, #ccfbf1, #ffffff) !important; padding: 4px 8px !important; border-radius: 6px 6px 0 0; }
+html.print-color .print-doc strong { color: #4c1d95 !important; }
+html.print-color .print-doc .lines { border-bottom: 1px solid #a78bfa !important; }
+html.print-color .print-doc .print-band { display: block; height: 10px; border-radius: 6px; margin-bottom: 14px; background: linear-gradient(90deg, #2ee6d6, #8b5cf6, #f472b6) !important; }
+.print-band { display: none; }
