@@ -10,6 +10,8 @@ const Immersions = lazy(() => import('./pages/Immersions'));
 const ImmersionPage = lazy(() => import('./pages/Immersions').then((m) => ({ default: m.ImmersionPage })));
 const Stories = lazy(() => import('./pages/Stories'));
 const StoryPlayer = lazy(() => import('./pages/Stories').then((m) => ({ default: m.StoryPlayer })));
+const Diferencas = lazy(() => import('./pages/Diferencas'));
+const Imprimiveis = lazy(() => import('./pages/Imprimiveis'));
 const Games = lazy(() => import('./pages/Games'));
 const GameRoom = lazy(() => import('./pages/GameRoom'));
 const GamePrint = lazy(() => import('./pages/GamePrint'));
@@ -59,6 +61,8 @@ const router = createHashRouter([
       { path: 'imersoes/:id', element: wrap(<ImmersionPage />) },
       { path: 'historias', element: wrap(<Stories />) },
       { path: 'historias/:id', element: wrap(<StoryPlayer />) },
+      { path: 'imprimiveis', element: wrap(<Imprimiveis />) },
+      { path: 'sete-erros/:id', element: wrap(<Diferencas />) },
       { path: 'jogos', element: wrap(<Games />) },
       { path: 'jogos/:id', element: wrap(<GameRoom />) },
       { path: 'jogos/:id/imprimir', element: wrap(<GamePrint />) },

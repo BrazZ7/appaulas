@@ -1,0 +1,125 @@
+[
+  {
+    "id": "feira",
+    "title": "Na feira do bairro",
+    "spots": [
+      {
+        "x": 17,
+        "y": 90,
+        "label": "cesto de palha"
+      },
+      {
+        "x": 93,
+        "y": 77,
+        "label": "abacaxi"
+      },
+      {
+        "x": 70,
+        "y": 75,
+        "label": "balança"
+      },
+      {
+        "x": 31,
+        "y": 35,
+        "label": "lanterna"
+      },
+      {
+        "x": 18,
+        "y": 14,
+        "label": "arara"
+      },
+      {
+        "x": 52,
+        "y": 87,
+        "label": "abóbora"
+      },
+      {
+        "x": 39,
+        "y": 60,
+        "label": "vaso"
+      }
+    ]
+  },
+  {
+    "id": "rio",
+    "title": "À margem do rio",
+    "spots": [
+      {
+        "x": 59,
+        "y": 12,
+        "label": "pipa"
+      },
+      {
+        "x": 83,
+        "y": 28,
+        "label": "martim-pescador"
+      },
+      {
+        "x": 15,
+        "y": 77,
+        "label": "bola"
+      },
+      {
+        "x": 49,
+        "y": 48,
+        "label": "canoa"
+      },
+      {
+        "x": 56,
+        "y": 86,
+        "label": "flor aquática"
+      },
+      {
+        "x": 73,
+        "y": 71,
+        "label": "tartaruga"
+      },
+      {
+        "x": 94,
+        "y": 89,
+        "label": "bota"
+      }
+    ]
+  },
+  {
+    "id": "biblioteca",
+    "title": "Na biblioteca da escola",
+    "spots": [
+      {
+        "x": 70,
+        "y": 33,
+        "label": "chave"
+      },
+      {
+        "x": 90,
+        "y": 83,
+        "label": "livro"
+      },
+      {
+        "x": 15,
+        "y": 77,
+        "label": "globo"
+      },
+      {
+        "x": 50,
+        "y": 81,
+        "label": "pena e tinteiro"
+      },
+      {
+        "x": 75,
+        "y": 68,
+        "label": "luminária"
+      },
+      {
+        "x": 62,
+        "y": 87,
+        "label": "gato"
+      },
+      {
+        "x": 28,
+        "y": 24,
+        "label": "ampulheta"
+      }
+    ]
+  }
+]

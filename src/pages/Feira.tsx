@@ -112,7 +112,7 @@ export default function Feira() {
                 const promo = promoFor(p.id);
                 return (
                   <div key={p.id} className="panel tight stack-sm" style={{ background: 'rgba(40,30,20,.35)', borderColor: promo ? 'var(--amber)' : undefined }}>
-                    <div className="row between nowrap"><span style={{ fontSize: '2rem' }} aria-hidden>{p.emoji}</span>{promo && <span className="badge amber"><Percent size={12} /> promo</span>}</div>
+                    <div className="row between nowrap"><img className="product-art" src={'/atividades/'+p.id+'.webp'} alt=""/>{promo && <span className="badge amber"><Percent size={12} /> promo</span>}</div>
                     <strong>{p.name}</strong>
                     {editPrices ? (
                       <label className="xs">Preço (R$/{p.unit})
@@ -142,7 +142,7 @@ export default function Feira() {
                 const p = products.find((x) => x.id === l.productId)!;
                 return (
                   <li key={l.productId} className="row nowrap" style={{ padding: '8px 0', borderBottom: '1px solid var(--border)' }}>
-                    <span style={{ fontSize: '1.5rem' }} aria-hidden>{p.emoji}</span>
+                    <img className="product-art" src={'/atividades/'+p.id+'.webp'} alt=""/>
                     <div className="grow" style={{ minWidth: 0 }}><strong>{l.name}</strong><div className="xs muted" style={{ whiteSpace: 'nowrap' }}>{brl(l.unitCents)}/{p.unit}{l.discountCents > 0 && <span style={{ color: 'var(--amber)' }}> · −{brl(l.discountCents)}</span>}</div></div>
                     <button className="btn icon ghost" aria-label={`Diminuir ${l.name}`} onClick={() => step(p, -1)}><Minus /></button>
                     <input className="input num" style={{ width: 64, textAlign: 'center', padding: '6px' }} type="number" min={0} step={p.step} value={l.qty} aria-label={`Quantidade de ${l.name} em ${p.unit}`} onChange={(e) => setQty(p.id, Number(e.target.value))} />

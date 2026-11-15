@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { Art, Sprite } from '../components/Art';
 import { SPRITES, teamEmblem } from '../content/art-links';
+import { ItemIcon } from '../components/ItemIcon';
 import { Bar, Notice, Switch, anosLabel, minutes, toast } from '../components/ui';
 import { GAME_ACTIVITIES, SUBJECT_MAP } from '../content';
 import {
@@ -269,7 +270,7 @@ function ClassifyGame({ c, onResult, onDone, seed }: Ctl & { c: ClassifyContent 
         <div>
           <span className="label">1. Escolham um item</span>
           <div className="row mt" style={{ marginTop: 8 }}>
-            {unplaced.map((it) => <button key={it.id} className={`chip ${sel === it.id ? 'on' : ''}`} aria-pressed={sel === it.id} onClick={() => setSel(it.id)} style={{ fontSize: '.95rem', padding: it.sprite ? '4px 14px 4px 6px' : '8px 14px' }}>{it.sprite && <Sprite id={it.sprite} size={40} />}{it.label}</button>)}
+            {unplaced.map((it) => <button key={it.id} className={`chip ${sel === it.id ? 'on' : ''}`} aria-pressed={sel === it.id} onClick={() => setSel(it.id)} style={{ fontSize: '.95rem', padding: it.sprite ? '4px 14px 4px 6px' : '8px 14px' }}>{it.sprite ? <Sprite id={it.sprite} size={40} /> : <ItemIcon id={it.id} />}{it.label}</button>)}
           </div>
           <span className="label" style={{ display: 'block', marginTop: 12 }}>2. Coloquem na categoria</span>
         </div>

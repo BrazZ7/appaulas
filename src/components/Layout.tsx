@@ -38,6 +38,7 @@ const NAV_TEACHER = [
   { to: '/materias', label: 'Matérias', icon: Layers },
   { to: '/imersoes', label: 'Imersões', icon: Compass },
   { to: '/jogos', label: 'Jogos', icon: Gamepad2 },
+  { to: '/imprimiveis', label: 'Imprimíveis', icon: Library },
   { to: '/estudio', label: 'Estúdio', icon: Clapperboard },
   { to: '/turmas', label: 'Minhas turmas', icon: Users },
 ];
