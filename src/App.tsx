@@ -12,6 +12,7 @@ const Stories = lazy(() => import('./pages/Stories'));
 const StoryPlayer = lazy(() => import('./pages/Stories').then((m) => ({ default: m.StoryPlayer })));
 const Games = lazy(() => import('./pages/Games'));
 const GameRoom = lazy(() => import('./pages/GameRoom'));
+const GamePrint = lazy(() => import('./pages/GamePrint'));
 const Feira = lazy(() => import('./pages/Feira'));
 const Lab = lazy(() => import('./pages/Lab'));
 const City = lazy(() => import('./pages/City'));
@@ -60,6 +61,7 @@ const router = createHashRouter([
       { path: 'historias/:id', element: wrap(<StoryPlayer />) },
       { path: 'jogos', element: wrap(<Games />) },
       { path: 'jogos/:id', element: wrap(<GameRoom />) },
+      { path: 'jogos/:id/imprimir', element: wrap(<GamePrint />) },
       { path: 'simulacoes/feira', element: wrap(<Feira />) },
       { path: 'laboratorio', element: wrap(<Lab />) },
       { path: 'cidade', element: wrap(<City />) },

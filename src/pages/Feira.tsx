@@ -4,7 +4,8 @@ import {
   ArrowRight, BarChart3, CheckCircle2, Circle, Handshake, Lightbulb, Minus, Pause, Percent, Play, Plus, Save, ShoppingCart,
   Target, Trash2, TrendingUp, Users, Wallet, Pencil, Leaf, PiggyBank,
 } from 'lucide-react';
-import { Art } from '../components/Art';
+import { Art, Sprite } from '../components/Art';
+import { teamEmblem } from '../content/art-links';
 import { Bar, Modal, Notice, toast } from '../components/ui';
 import { FEIRA_LEVELS, FEIRA_PRODUCTS, FEIRA_REFLECTION, FEIRA_SITUATIONS, PREPARED_SIMULATIONS } from '../content/simulations';
 import { brl, calcBasket, fmtQty, type FeiraProduct } from '../engine/feira';
@@ -84,7 +85,7 @@ export default function Feira() {
               <div className="row mt" style={{ marginTop: 10 }} role="group" aria-label="Equipe ativa">
                 {teamNames.map((n, i) => (
                   <button key={n} className={`chip ${team === i ? 'on' : ''}`} aria-pressed={team === i} onClick={() => setTeam(i)} style={{ borderColor: TEAM_COLORS[i] }}>
-                    <span aria-hidden style={{ width: 10, height: 10, borderRadius: '50%', background: TEAM_COLORS[i] }} /> {n.replace('Equipe ', '')}
+                    {teamEmblem(n) ? <Sprite id={teamEmblem(n)!} size={26} /> : <span aria-hidden style={{ width: 10, height: 10, borderRadius: '50%', background: TEAM_COLORS[i] }} />} {n.replace('Equipe ', '')}
                   </button>
                 ))}
               </div>

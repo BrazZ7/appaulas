@@ -113,7 +113,7 @@ export const store = {
   exportJson: () => JSON.stringify(state, null, 2),
   importJson(text: string) {
     const parsed = JSON.parse(text) as AppState;
-    if (parsed.version !== 1) throw new Error('Arquivo de outra versão do AulaViva.');
+    if (parsed.version !== 1) throw new Error('Arquivo de outra versão do Ensinaê.');
     state = { ...seedState(), ...parsed };
     persist();
     listeners.forEach((l) => l());

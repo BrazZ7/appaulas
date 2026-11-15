@@ -81,11 +81,11 @@ export function checkClassification(
 }
 
 // ── Memória ──
-export interface MemoryCard { key: string; pairId: string; face: 'a' | 'b'; text: string }
+export interface MemoryCard { key: string; pairId: string; face: 'a' | 'b'; text: string; art?: string }
 
 export function buildMemoryDeck(content: Extract<GameContent, { kind: 'memoria' }>, seed: number): MemoryCard[] {
   const cards: MemoryCard[] = content.pairs.flatMap((p) => [
-    { key: `${p.id}-a`, pairId: p.id, face: 'a' as const, text: p.a },
+    { key: `${p.id}-a`, pairId: p.id, face: 'a' as const, text: p.a, art: p.artId },
     { key: `${p.id}-b`, pairId: p.id, face: 'b' as const, text: p.b },
   ]);
   return shuffle(cards, seed);

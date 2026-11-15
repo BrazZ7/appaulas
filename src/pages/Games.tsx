@@ -116,7 +116,7 @@ export default function Games() {
             </div>
             <h3>Passo a passo</h3>
             <ol className="stack-sm">{openPlay.steps.map((st, i) => <li key={i}>{st}</li>)}</ol>
-            <button className="btn" onClick={() => window.print()}>Imprimir instruções</button>
+            <div className="row"><button className="btn" onClick={() => window.print()}>Imprimir instruções</button>{openPlay.kind === 'bingo' && <Link className="btn primary" to="/jogos/bingo/imprimir">Gerar cartelas para imprimir</Link>}</div>
           </div>
         )}
       </Modal>

@@ -1,4 +1,4 @@
-/* ═══════════════════════ AulaViva — sistema visual ═══════════════════════ */
+/* ═══════════════════════ Ensinaê — sistema visual ═══════════════════════ */
 :root {
   --bg: #060a22;
   --bg-2: #0a1035;
@@ -88,7 +88,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .brand-mark { width: 40px; height: 40px; flex: none; }
 .brand-name { font-family: var(--font-head); font-weight: 700; font-size: 1.55rem; letter-spacing: -0.02em; }
 .brand-name b { color: var(--cyan); font-weight: 700; }
-.brand-sub { display: block; font-size: 0.62rem; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; margin-top: -2px; }
+.brand-sub { display: block; font-size: 0.6rem; letter-spacing: 0.06em; white-space: nowrap; color: var(--muted); text-transform: uppercase; margin-top: -2px; }
 .nav-link {
   display: flex; align-items: center; gap: 14px; padding: 11px 14px; border-radius: 14px;
   color: var(--text); text-decoration: none; font-weight: 600; font-size: 1.02rem;
@@ -416,3 +416,48 @@ html.print-color .print-doc strong { color: #4c1d95 !important; }
 html.print-color .print-doc .lines { border-bottom: 1px solid #a78bfa !important; }
 html.print-color .print-doc .print-band { display: block; height: 10px; border-radius: 6px; margin-bottom: 14px; background: linear-gradient(90deg, #2ee6d6, #8b5cf6, #f472b6) !important; }
 .print-band { display: none; }
+
+/* ─────────── Jogo da memória ─────────── */
+.mem-card { aspect-ratio: 3 / 4; cursor: pointer; color: var(--text); display: grid; place-items: center; text-align: center; font-weight: 700; position: relative; overflow: hidden; padding: 8px; background: linear-gradient(135deg, #1c2670, #3b1d7a); }
+.mem-card .mem-text { font-size: 0.82rem; line-height: 1.3; }
+.mem-card .mem-label { position: absolute; left: 0; right: 0; bottom: 0; padding: 6px; background: linear-gradient(0deg, rgba(5, 8, 30, 0.9), rgba(5, 8, 30, 0)); font-size: 0.85rem; z-index: 2; }
+.mem-card .mem-back { position: absolute; inset: 6px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.25); background: radial-gradient(circle at 50% 50%, rgba(46, 230, 214, 0.35) 0 8%, transparent 9%), repeating-conic-gradient(from 0deg, rgba(139, 92, 246, 0.35) 0 15deg, rgba(46, 230, 214, 0.18) 15deg 30deg); }
+.sprite { display: block; }
+
+.print-band-img { display: none; }
+html.print-color .print-doc .print-band-img { display: block; width: 100%; aspect-ratio: 4 / 1; object-fit: cover; border-radius: 10px; margin-bottom: 12px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html.print-color .print-doc .print-band { display: none !important; }
+
+/* ─────────── Folhas imprimíveis dos jogos ─────────── */
+.gp-sheet { background: #fff; color: #111; padding: clamp(16px, 4vw, 36px); border-radius: 12px; max-width: 900px; width: 100%; margin: 0 auto; }
+.gp-sheet h1 { font-size: 1.6rem; color: #111; }
+.gp-sheet h2 { font-size: 1.15rem; color: #111; margin-top: 18px; }
+.gp-sheet p, .gp-sheet li { color: #222; }
+.gp-grid { display: grid; gap: 0; margin: 10px 0; }
+.gp-2 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.gp-3 { grid-template-columns: repeat(3, 1fr); }
+.gp-4 { grid-template-columns: repeat(4, 1fr); }
+.gp-5 { grid-template-columns: repeat(5, 1fr); }
+.gp-card { border: 1.5px dashed #999; padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; color: #111; break-inside: avoid; min-height: 90px; }
+.gp-mem { aspect-ratio: 3 / 4; }
+.gp-mem-name { font-weight: 800; font-size: 1rem; }
+.gp-mem-text { font-size: 0.85rem; line-height: 1.3; }
+.gp-verso { aspect-ratio: 3 / 4; background: repeating-conic-gradient(#ede9fe 0 15deg, #ccfbf1 15deg 30deg); }
+html:not(.print-color) .gp-verso { background: repeating-linear-gradient(45deg, #fff 0 8px, #eee 8px 16px); }
+.gp-seq { min-height: 200px; }
+.gp-cat .gp-drop { width: 100%; height: 220px; border: 1px solid #ccc; border-radius: 6px; }
+.gp-item { min-height: 100px; font-size: 0.85rem; }
+.gp-two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.gp-bingo { border-style: solid; }
+.gp-bingo-grid { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; border: 2px solid #4c1d95; }
+.gp-bingo-grid div { border: 1px solid #a78bfa; aspect-ratio: 1; display: grid; place-items: center; font-size: 0.78rem; font-weight: 700; padding: 3px; text-align: center; }
+.lines-inline { display: inline-block; width: 60%; border-bottom: 1px solid #999; }
+.gp-clue { align-items: flex-start; text-align: left; }
+html.print-color .gp-sheet h1 { color: #4c1d95; }
+html.print-color .gp-card { border-color: #8b5cf6; }
+html.print-color .gp-mem.with-art { background: #f5f3ff; }
+@media print { .gp-sheet { padding: 0; max-width: none; } .gp-sheet, .gp-sheet * { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+@media (max-width: 760px) { .gp-4, .gp-5 { grid-template-columns: repeat(2, 1fr); } .gp-3 { grid-template-columns: repeat(2, 1fr); } }
+html.print-color .print-doc .gp-verso { background: repeating-conic-gradient(#ede9fe 0 15deg, #ccfbf1 15deg 30deg) !important; }
+html.print-color .print-doc .gp-mem.with-art { background: #f5f3ff !important; }
+html.print-color .print-doc .gp-bingo-grid { border-color: #4c1d95 !important; }

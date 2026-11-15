@@ -20,6 +20,8 @@ export interface AssetDef {
   palette: [string, string, string];
   motif: Motif;
   hasMobile?: boolean;
+  /** Variantes leves disponíveis (padrão: -sm e -md). */
+  variants?: 'sm-md' | 'sm';
 }
 
 const A = (id: string, alt: string, ratio: number, palette: [string, string, string], motif: Motif, hasMobile = false): AssetDef => ({
@@ -110,6 +112,63 @@ export const ASSETS: AssetDef[] = [
   // Projeto
   A('proj-cidade-sustentavel', 'Bairro sustentável com ponte, rio, ciclistas e painéis solares', W, ['#14532d', '#0ea5e9', '#facc15'], 'cidade', true),
 ];
+
+
+// ───────── Fase 2 (imagens geradas no ChatGPT, recuperadas da conversa compartilhada) ─────────
+const SCN = (id: string, alt: string, motif: Motif = 'livro'): AssetDef => A(id, alt, W, ['#1e1b4b', '#7c3aed', '#14b8a6'], motif);
+ASSETS.push(
+  SCN('story-biblioteca-testemunha', 'Caio, em cadeira de rodas, lembra de algo entre as estantes enquanto Lia escuta'),
+  SCN('story-biblioteca-mapa', 'Planta da biblioteca desenhada a lápis na contracapa de um livro, sob uma lupa'),
+  SCN('story-biblioteca-fichas', 'Lia procura uma ficha na gaveta de um fichário antigo'),
+  SCN('story-biblioteca-ivone', 'Dona Ivone entrega uma chave antiga a Lia no balcão da biblioteca'),
+  SCN('story-biblioteca-encontro', 'Senhora de cachecol azul olha o mar pela janela enquanto Lia se aproxima'),
+  SCN('story-rio-margem', 'Estudantes coletam água esverdeada na margem do rio', 'rio'),
+  SCN('story-rio-socorro', 'Dona Socorro conversa com os estudantes na horta à beira do rio', 'rio'),
+  SCN('story-rio-post-fabrica', 'Estudantes e moradores olham uma foto do rio que se espalha pelo celular', 'rio'),
+  SCN('story-rio-fabrica', 'Engenheira mostra os tanques de tratamento da fábrica aos estudantes', 'rio'),
+  SCN('story-rio-cano', 'Estudantes encontram um cano despejando no barranco do rio', 'rio'),
+  SCN('story-rio-moradores', 'Moradora com uma criança no colo conversa com Davi e Yara no portão', 'rio'),
+  SCN('story-rio-analise', 'Professora explica um diagrama no quadro com potes de amostra na mesa', 'rio'),
+  SCN('story-rio-reuniao', 'Reunião na quadra da escola com gráficos projetados', 'rio'),
+  SCN('story-rio-relatorio', 'Estudantes entregam um relatório com gráficos em uma repartição pública', 'rio'),
+  SCN('story-rio-conflito', 'Vizinhos discutem de braços cruzados com o rio ao fundo', 'rio'),
+  SCN('story-radio-corredor', 'Estudantes e adultos cochicham e mostram celulares no corredor', 'radio'),
+  SCN('story-radio-original', 'Bia lê um comunicado num tablet no corredor da escola', 'radio'),
+  SCN('story-radio-direcao', 'Bia e Téo conversam com a vice-diretora em sua sala', 'radio'),
+  SCN('story-radio-autor-print', 'Téo se aproxima com respeito de Nico, encolhido num banco do pátio', 'radio'),
+  SCN('story-radio-correcao', 'Bia ao microfone assume o erro, com Téo na mesa de som', 'radio'),
+  SCN('story-radio-boato', 'Estudantes preocupados olhando celulares no pátio', 'radio'),
+  SCN('imm-afro-cap1', 'Griô conta histórias para jovens sentados em roda', 'tambor'),
+  SCN('imm-afro-cap2', 'Comunidade quilombola com roça, cestaria e crianças', 'tambor'),
+  SCN('imm-afro-cap3', 'Estudantes negros em formatura e biblioteca universitária', 'pessoas'),
+  SCN('imm-afro-cap4', 'Jovens em centro cultural com música, tecnologia e arte', 'tambor'),
+  SCN('imm-indigena-cap1', 'Jovens indígenas contemporâneos com celular e notebook', 'floresta'),
+  SCN('imm-indigena-cap2', 'Escola indígena com professora e estudantes', 'floresta'),
+  SCN('imm-indigena-cap3', 'Assembleia comunitária indígena', 'floresta'),
+  SCN('imm-indigena-cap4', 'Comunicadores, artistas e cientistas indígenas trabalhando', 'floresta'),
+  SCN('imm-agua-cap1', 'Torneira, caixa-d’água e córrego num bairro', 'rio'),
+  SCN('imm-agua-cap2', 'Bacia hidrográfica vista do alto com rios que se juntam', 'rio'),
+  SCN('imm-agua-cap3', 'Irrigação, fábrica e casas usando o mesmo rio', 'rio'),
+  SCN('imm-agua-cap4', 'Mutirão de plantio na mata ciliar', 'rio'),
+  SCN('imm-sabores-cap1', 'Pessoas de várias regiões conversando animadas', 'pessoas'),
+  SCN('imm-sabores-cap2', 'Mesa farta com pratos de várias regiões do Brasil', 'feira'),
+  SCN('imm-sabores-cap3', 'Quadrilha junina, boi e ciranda numa praça', 'pessoas'),
+  SCN('imm-sabores-cap4', 'Estudantes e idosos montando um mapa afetivo do bairro', 'mapa'),
+  ...[
+    ['agua-1-evaporacao', 'Praia e foz do rio com setas de vapor subindo da água'],
+    ['agua-2-vapor-sobe', 'O vapor sobe e esfria em direção às nuvens'],
+    ['agua-3-condensacao', 'Menina observa o vapor virar gotículas e formar nuvens'],
+    ['agua-4-precipitacao', 'Chuva caindo sobre a praia e o rio'],
+    ['agua-5-infiltracao', 'Água da chuva entrando no solo, em corte'],
+    ['agua-6-retorno', 'Setas mostram o rio levando a água de volta ao mar'],
+  ].map(([id, alt]) => A(id, alt, 4 / 3, ['#0c4a6e', '#0d9488', '#facc15'], 'rio')),
+  ...[
+    ['mem-amazonia', 'Floresta amazônica com rio largo sob chuva fina'], ['mem-cerrado', 'Cerrado com árvores tortuosas, capim dourado e buritis'],
+    ['mem-caatinga', 'Caatinga seca com mandacaru'], ['mem-mata-atlantica', 'Mata Atlântica na serra perto do mar, com bromélias'],
+    ['mem-pantanal', 'Capivaras na planície alagada do Pantanal'], ['mem-pampa', 'Campos ondulados do Pampa'],
+    ['mem-mico-leao-dourado', 'Mico-leão-dourado num galho da Mata Atlântica'], ['mem-tuiuiu', 'Tuiuiú no Pantanal'],
+  ].map(([id, alt]) => ({ ...A(id, alt, 1, ['#064e3b', '#0d9488', '#a3e635'], 'floresta'), variants: 'sm' as const })),
+);
 
 export const ASSET_MAP: Record<string, AssetDef> = Object.fromEntries(ASSETS.map((a) => [a.id, a]));
 

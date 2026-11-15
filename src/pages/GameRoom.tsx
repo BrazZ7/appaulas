@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
-  ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Lightbulb, Monitor, Pause, Play, RotateCcw, Timer, Trophy, Users, X, Save,
+  ArrowDown, ArrowUp, Check, Printer, ChevronLeft, ChevronRight, Lightbulb, Monitor, Pause, Play, RotateCcw, Timer, Trophy, Users, X, Save,
 } from 'lucide-react';
-import { Art } from '../components/Art';
+import { Art, Sprite } from '../components/Art';
+import { SPRITES, teamEmblem } from '../content/art-links';
 import { Bar, Notice, Switch, anosLabel, minutes, toast } from '../components/ui';
 import { GAME_ACTIVITIES, SUBJECT_MAP } from '../content';
 import {
@@ -161,11 +162,14 @@ function MemoryGame({ c, onResult, onDone, seed }: Ctl & { c: MemoryContent }) {
         {deck.map((card) => {
           const up = matched.includes(card.pairId) || open.some((o) => o.key === card.key);
           return (
-            <button key={card.key} onClick={() => flip(card)} className="panel tight pop" aria-label={up ? card.text : 'Carta virada'} aria-pressed={up}
-              style={{ minHeight: 110, cursor: 'pointer', color: 'var(--text)', display: 'grid', placeItems: 'center', textAlign: 'center', fontWeight: 700,
-                background: matched.includes(card.pairId) ? 'rgba(46,230,214,.16)' : up ? 'rgba(139,92,246,.28)' : 'linear-gradient(135deg, #1c2670, #3b1d7a)',
-                borderColor: matched.includes(card.pairId) ? 'var(--cyan)' : undefined }}>
-              {up ? card.text : <span aria-hidden style={{ fontSize: '1.8rem', opacity: 0.6 }}>✦</span>}
+            <button key={card.key} onClick={() => flip(card)} className={`panel tight pop mem-card ${up ? 'up' : ''}`} aria-label={up ? card.text : 'Carta virada'} aria-pressed={up}
+              style={{ borderColor: matched.includes(card.pairId) ? 'var(--cyan)' : undefined, background: matched.includes(card.pairId) ? 'rgba(46,230,214,.16)' : up ? 'rgba(139,92,246,.28)' : undefined }}>
+              {up && card.art ? (
+                <>
+                  <Art id={card.art} fill decorative sizes="200px" />
+                  <span className="mem-label">{card.text}</span>
+                </>
+              ) : up ? <span className="mem-text">{card.text}</span> : <span aria-hidden className="mem-back" />}
             </button>
           );
         })}
@@ -208,6 +212,7 @@ function SequenceGame({ c, onResult, onDone, seed }: Ctl & { c: SequenceContent 
             <li key={it.id} draggable onDragStart={() => setDrag(idx)} onDragOver={(e) => e.preventDefault()} onDrop={() => { if (drag !== null) move(drag, idx); setDrag(null); }}
               className="list-item" style={{ margin: 0, borderColor: result ? (ok ? 'var(--green)' : 'var(--red)') : undefined }}>
               <span className="badge num">{idx + 1}</span>
+              {it.artId && (SPRITES.has(it.artId) ? <Sprite id={it.artId} size={56} /> : <Art id={it.artId} ratio={4 / 3} decorative sizes="120px" style={{ width: 96, flex: 'none', borderRadius: 10 }} />)}
               <div className="grow"><strong>{it.label}</strong>{result?.allCorrect && <div className="xs muted">{it.detail}</div>}</div>
               {result && (ok ? <Check color="var(--green)" aria-label="posição correta" /> : <X color="var(--red)" aria-label="posição incorreta" />)}
               <button className="btn icon ghost" aria-label={`Subir ${it.label}`} onClick={() => move(idx, idx - 1)} disabled={idx === 0}><ArrowUp /></button>
@@ -264,7 +269,7 @@ function ClassifyGame({ c, onResult, onDone, seed }: Ctl & { c: ClassifyContent 
         <div>
           <span className="label">1. Escolham um item</span>
           <div className="row mt" style={{ marginTop: 8 }}>
-            {unplaced.map((it) => <button key={it.id} className={`chip ${sel === it.id ? 'on' : ''}`} aria-pressed={sel === it.id} onClick={() => setSel(it.id)} style={{ fontSize: '.95rem', padding: '8px 14px' }}>{it.label}</button>)}
+            {unplaced.map((it) => <button key={it.id} className={`chip ${sel === it.id ? 'on' : ''}`} aria-pressed={sel === it.id} onClick={() => setSel(it.id)} style={{ fontSize: '.95rem', padding: it.sprite ? '4px 14px 4px 6px' : '8px 14px' }}>{it.sprite && <Sprite id={it.sprite} size={40} />}{it.label}</button>)}
           </div>
           <span className="label" style={{ display: 'block', marginTop: 12 }}>2. Coloquem na categoria</span>
         </div>
@@ -272,7 +277,7 @@ function ClassifyGame({ c, onResult, onDone, seed }: Ctl & { c: ClassifyContent 
       <div className="grid" style={{ gridTemplateColumns: `repeat(auto-fit, minmax(170px, 1fr))` }}>
         {c.categories.map((cat) => (
           <div key={cat.id} className="panel tight stack-sm">
-            <button className="btn outline-cyan block" onClick={() => put(cat.id)} disabled={!sel}>{cat.label}</button>
+            <button className="btn outline-cyan block" onClick={() => put(cat.id)} disabled={!sel} style={cat.sprite ? { flexDirection: 'column', gap: 4, padding: '10px' } : undefined}>{cat.sprite && <Sprite id={cat.sprite} size={64} />}{cat.label}</button>
             {cat.description && <span className="xs muted">{cat.description}</span>}
             <ul className="clean stack-sm">
               {c.items.filter((it) => place[it.id] === cat.id).map((it) => {
@@ -443,6 +448,7 @@ function GameRoomInner({ id }: { id?: string }) {
               <div className="grid g2">
                 {teams.map((t, i) => (
                   <div key={t.id} className="panel tight row nowrap" style={{ borderColor: t.color, background: `${t.color}1f` }}>
+                    {teamEmblem(t.name) && <Sprite id={teamEmblem(t.name)!} size={48} />}
                     <input className="input" value={t.name} aria-label={`Nome da equipe ${i + 1}`} onChange={(e) => setTeams(teams.map((x) => (x.id === t.id ? { ...x, name: e.target.value } : x)))} />
                     <span className="xs muted" style={{ whiteSpace: 'nowrap' }}>{t.memberIds.length} pessoas</span>
                     <button className="btn icon ghost" aria-label={`Remover ${t.name}`} disabled={teams.length <= 1} onClick={() => setTeams(teams.filter((x) => x.id !== t.id))}><X /></button>
@@ -483,6 +489,7 @@ function GameRoomInner({ id }: { id?: string }) {
             </label>
             <p className="xs muted">{cooperative ? 'A turma toda compartilha um único objetivo. As equipes se revezam na vez de responder, e o resultado é coletivo.' : 'As equipes se revezam. O resumo mostra o que cada equipe resolveu — nunca classificação de estudantes.'}</p>
             <button className="btn primary lg block" onClick={start}><Play /> Iniciar rodada</button>
+            <Link className="btn outline block" to={`/jogos/${g.id}/imprimir`}><Printer /> Imprimir versão em papel</Link>
           </aside>
         </div>
       )}
@@ -503,7 +510,7 @@ function GameRoomInner({ id }: { id?: string }) {
           <aside className="stack">
             <section className="panel stack-sm">
               <span className="label">Vez de responder</span>
-              <div className="row nowrap" style={{ fontSize: '1.4rem', fontWeight: 800, color: currentTeam?.color }}><Users /> {currentTeam?.name}</div>
+              <div className="row nowrap" style={{ fontSize: '1.4rem', fontWeight: 800, color: currentTeam?.color }}>{currentTeam && teamEmblem(currentTeam.name) ? <Sprite id={teamEmblem(currentTeam.name)!} size={48} /> : <Users />} {currentTeam?.name}</div>
               <span className="label mt">Progresso da turma</span>
               <Bar value={session.rounds.length} max={total} label="Progresso" />
               <span className="xs muted">{session.rounds.length} de {total} · {session.rounds.filter((r) => r.correct).length} resolvidas</span>

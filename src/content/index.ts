@@ -7,6 +7,11 @@ import { PROJECTS } from './project';
 import { THEME_DATES } from './calendar';
 import { SUBJECTS, SUBJECT_MAP } from './subjects';
 import type { Lesson, ResourceRef, SubjectId } from '../types/models';
+import { linkGames, linkImmersions, linkStories } from './art-links';
+
+linkStories(STORIES);
+linkImmersions(IMMERSIONS);
+linkGames(GAME_ACTIVITIES);
 
 export { LESSONS, STORIES, GAME_ACTIVITIES, PRESENTIAL_GAMES, IMMERSIONS, MICRO_IMMERSIONS, PROJECTS, THEME_DATES, SUBJECTS, SUBJECT_MAP };
 

@@ -1,7 +1,7 @@
 import type { Lesson } from '../types/models';
 
 /**
- * Biblioteca de aulas prontas do AulaViva.
+ * Biblioteca de aulas prontas do Ensinaê.
  * - Códigos BNCC foram omitidos de propósito: as habilidades estão descritas em palavras
  *   (ver `skills`). A coordenação pode associar os códigos após conferência no documento oficial.
  * - Preços e dados numéricos dos exemplos são fictícios e estão sinalizados.

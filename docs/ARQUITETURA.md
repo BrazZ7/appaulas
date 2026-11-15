@@ -1,4 +1,4 @@
-# Arquitetura do AulaViva
+# Arquitetura do Ensinaê
 
 ## Princípios
 1. **Conteúdo ≠ regras ≠ interface.** `src/content` é dado puro tipado; `src/engine` contém funções puras e testáveis (sem React); `src/pages` só compõe.

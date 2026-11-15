@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
-  Battery, Bot, Brain, ClipboardList, CloudRain, Code, Cpu, Droplet, FlaskConical, Leaf, NotebookPen, Play,
+  Battery, Brain, ClipboardList, CloudRain, Code, Cpu, Droplet, FlaskConical, Leaf, NotebookPen, Play,
   RotateCcw, Sun, Target, Trash2, Wind, Zap, ArrowUp, CornerUpLeft, CornerUpRight, Repeat, Sprout, Home, Info,
 } from 'lucide-react';
-import { Art } from '../components/Art';
+import { Art, Sprite } from '../components/Art';
 import { Notice, Switch, Tabs, toast } from '../components/ui';
 import { APPLIANCES, LAB_DEFAULTS, LAB_LIMITS, kwh, simulate, type Appliance, type LabInputs } from '../engine/lab';
 import { ROBOT_LEVELS, countBlocks, knn, runProgram, type Block, type Frame, type Sample } from '../engine/robot';
@@ -197,9 +197,9 @@ function Programming() {
             const watered = st?.watered.includes(`${x},${y}`);
             return (
               <div key={k} role="gridcell" aria-label={`${x},${y}${robot ? ' robô' : ''}${plant ? (watered ? ' muda regada' : ' muda') : ''}${rock ? ' pedra' : ''}`}
-                style={{ aspectRatio: '1', borderRadius: 10, display: 'grid', placeItems: 'center', fontSize: '1.5rem', position: 'relative', background: watered ? 'rgba(74,222,128,.25)' : 'rgba(80,60,40,.35)', border: '1px solid var(--border)' }}>
-                {rock && '🪨'}{plant && (watered ? '🌿' : '🌱')}
-                {robot && <span style={{ position: 'absolute', inset: 4, display: 'grid', placeItems: 'center', background: 'rgba(46,230,214,.25)', borderRadius: 8, fontSize: '1.1rem' }}><Bot size={22} /><span style={{ position: 'absolute', top: -2, right: 2, fontSize: '.9rem', color: 'var(--cyan)' }}>{arrow}</span></span>}
+                style={{ aspectRatio: '1', borderRadius: 10, display: 'grid', placeItems: 'center', fontSize: '1.5rem', position: 'relative', backgroundImage: `${watered ? 'linear-gradient(rgba(74,222,128,.35), rgba(74,222,128,.35)), ' : ''}url(${import.meta.env.BASE_URL}assets/terra.webp)`, backgroundSize: 'cover', border: '1px solid var(--border)' }}>
+                {rock && <Sprite id="pedra" size="80%" />}{plant && <Sprite id={watered ? 'muda-regada' : 'muda'} size="80%" />}
+                {robot && <span style={{ position: 'absolute', inset: 2, display: 'grid', placeItems: 'center', borderRadius: 8, boxShadow: '0 0 0 2px var(--cyan) inset' }}><Sprite id="robo" size="86%" style={{ transform: `rotate(${(st?.dir ?? 0) * 90}deg)`, transition: 'transform .3s' }} /><span style={{ position: 'absolute', top: -2, right: 2, fontSize: '.9rem', color: 'var(--cyan)', fontWeight: 800 }}>{arrow}</span></span>}
               </div>
             );
           })}

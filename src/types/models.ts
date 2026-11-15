@@ -1,5 +1,5 @@
 /**
- * Modelos de domínio do AulaViva.
+ * Modelos de domínio do Ensinaê.
  * Separação: tipos (aqui) · conteúdo (src/content) · regras/motores (src/engine) · interface (src/pages, src/components).
  */
 
@@ -181,6 +181,8 @@ export interface Character {
   name: string;
   description: string;
   color: string;
+  /** Retrato (PNG/WebP transparente) em /public/assets. */
+  portrait?: string;
 }
 
 export interface Story {
@@ -210,20 +212,21 @@ export interface QuizContent {
 }
 export interface MemoryContent {
   kind: 'memoria';
-  pairs: { id: ID; a: string; b: string; explanation: string }[];
+  /** artId opcional: ilustração exibida na face A da carta. */
+  pairs: { id: ID; a: string; b: string; explanation: string; artId?: string }[];
 }
 export interface SequenceContent {
   kind: 'sequencia';
   prompt: string;
   /** Itens na ORDEM CORRETA; o motor embaralha. */
-  items: { id: ID; label: string; detail: string }[];
+  items: { id: ID; label: string; detail: string; artId?: string }[];
   explanation: string;
 }
 export interface ClassifyContent {
   kind: 'classificacao';
   prompt: string;
-  categories: { id: ID; label: string; description?: string }[];
-  items: { id: ID; label: string; category: ID; explanation: string }[];
+  categories: { id: ID; label: string; description?: string; sprite?: string }[];
+  items: { id: ID; label: string; category: ID; explanation: string; sprite?: string }[];
 }
 export interface MatchContent {
   kind: 'associacao';
@@ -409,6 +412,8 @@ export interface Immersion {
   chapters: {
     id: ID;
     title: string;
+    /** Cenário próprio do capítulo (16:9). */
+    artId?: string;
     paragraphs: string[];
     explore: string[];
     /** Escolha da turma, com o que muda. */

@@ -14,6 +14,11 @@ const MOTIF_ICON: Record<Motif, typeof BookOpen> = {
 
 const fullWidth = (r: number) => (r > 2 ? 2520 : r > 1.5 ? 1920 : 1200);
 
+/** Imagem com transparência (personagem, item, emblema). */
+export function Sprite({ id, alt = '', size, className = '', style }: { id: string; alt?: string; size?: number | string; className?: string; style?: React.CSSProperties }) {
+  return <img className={`sprite ${className}`} src={`${import.meta.env.BASE_URL}assets/${id}.webp`} alt={alt} loading="lazy" decoding="async" width={typeof size === 'number' ? size : undefined} height={typeof size === 'number' ? size : undefined} style={{ width: size, height: size, objectFit: 'contain', ...style }} />;
+}
+
 const hash = (s: string) => { let h = 7; for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 10007; return h; };
 
 interface Props {
@@ -51,7 +56,7 @@ export function Art({ id, ratio, className = '', style, decorative, fill, eager,
           {def.hasMobile && fill && <source media="(max-width: 760px)" srcSet={`${base}${id}-mobile.webp`} />}
           <img
             src={`${base}${def.file}`}
-            srcSet={`${base}${id}-sm.webp 640w, ${base}${id}-md.webp 1024w, ${base}${def.file} ${fullWidth(def.ratio)}w`}
+            srcSet={def.variants === 'sm' ? `${base}${id}-sm.webp 400w, ${base}${def.file} 800w` : `${base}${id}-sm.webp 640w, ${base}${id}-md.webp 1024w, ${base}${def.file} ${fullWidth(def.ratio)}w`}
             sizes={sizes ?? (fill ? '100vw' : '(max-width: 760px) 50vw, 420px')}
             alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" onError={() => setFailed(true)} />
         </picture>

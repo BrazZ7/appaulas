@@ -190,7 +190,7 @@ export default function Studio() {
           {step === 2 && (<>
             <p className="small muted" style={{ margin: 0 }}>Comece com um modelo de 4 cenas (abertura, descoberta, desafio, reflexão) e edite tudo. <strong>Não é gerado por IA</strong> — é um modelo de estrutura.</p>
             <button className="btn primary" onClick={() => { if (cur.scenes.length && !confirm('Substituir as cenas atuais pelo modelo?')) return; save({ scenes: templateScenes(cur.theme) }); setSel(0); setStep(3); }}><Sparkles /> Usar modelo de roteiro</button>
-            <Notice kind="info">Para usar IA (ex.: Higgsfield ou outra ferramenta), gere fora do AulaViva, revise e cole o texto nas cenas. Nada é salvo ou publicado sem sua edição.</Notice>
+            <Notice kind="info">Para usar IA (ex.: Higgsfield ou outra ferramenta), gere fora do Ensinaê, revise e cole o texto nas cenas. Nada é salvo ou publicado sem sua edição.</Notice>
           </>)}
           {(step === 3 || step === 4 || step === 5) && scene && (<>
             <div className="row between"><strong>Cena {sel + 1}</strong>

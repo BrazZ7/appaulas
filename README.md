@@ -1,4 +1,6 @@
-# AulaViva
+# Ensinaê
+
+_Cada aula, uma nova descoberta._
 
 Plataforma para professores brasileiros prepararem e conduzirem aulas imersivas: histórias com escolhas, jogos cooperativos, simulações, imersões culturais, formação docente, estúdio de vídeo, planejador por blocos e acompanhamento formativo das turmas.
 

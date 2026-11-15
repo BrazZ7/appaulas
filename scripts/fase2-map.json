@@ -1,0 +1,30 @@
+{
+  "scene": {
+    "story-biblioteca-testemunha": "150", "story-biblioteca-mapa": "028", "story-biblioteca-fichas": "121", "story-biblioteca-ivone": "004", "story-biblioteca-encontro": "168",
+    "story-rio-margem": "093", "story-rio-socorro": "169", "story-rio-post-fabrica": "041", "story-rio-fabrica": "164", "story-rio-cano": "131", "story-rio-moradores": "115", "story-rio-analise": "071", "story-rio-reuniao": "039", "story-rio-relatorio": "104", "story-rio-conflito": "024",
+    "story-radio-corredor": "145", "story-radio-original": "045", "story-radio-direcao": "172", "story-radio-autor-print": "040", "story-radio-correcao": "137", "story-radio-boato": "030",
+    "imm-afro-cap1": "136", "imm-afro-cap2": "077", "imm-afro-cap3": "044", "imm-afro-cap4": "014",
+    "imm-indigena-cap1": "005", "imm-indigena-cap2": "064", "imm-indigena-cap3": "067", "imm-indigena-cap4": "116",
+    "imm-agua-cap1": "029", "imm-agua-cap2": "133", "imm-agua-cap3": "143", "imm-agua-cap4": "159",
+    "imm-sabores-cap1": "112", "imm-sabores-cap2": "078", "imm-sabores-cap3": "013", "imm-sabores-cap4": "086"
+  },
+  "card43": {
+    "agua-1-evaporacao": "021", "agua-2-vapor-sobe": "088", "agua-3-condensacao": "147", "agua-4-precipitacao": "173", "agua-5-infiltracao": "155", "agua-6-retorno": "129"
+  },
+  "square": {
+    "mem-amazonia": "130", "mem-cerrado": "023", "mem-caatinga": "149", "mem-mata-atlantica": "092", "mem-pantanal": "051", "mem-pampa": "153", "mem-mico-leao-dourado": "109", "mem-tuiuiu": "107"
+  },
+  "alpha": {
+    "char-lia": "123", "char-caio": "068", "char-ivone": "016", "char-davi": "146", "char-yara": "070", "char-socorro": "047", "char-bia": "034", "char-teo": "052", "char-rosangela": "081",
+    "equipe-arvoredo": "065", "equipe-rio-vivo": "122", "equipe-horizonte": "142", "equipe-aurora": "079", "equipe-cometa": "011", "equipe-floresta": "058", "equipe-mare": "163", "equipe-sol": "074",
+    "escrita-1-planejar": "140", "escrita-2-ideias": "059", "escrita-3-rascunho": "057", "escrita-4-revisar": "063", "escrita-5-reescrever": "156", "escrita-6-publicar": "167",
+    "res-papelao": "050", "res-lata": "015", "res-pote-vidro": "095", "res-casca-banana": "126", "res-fralda": "166",
+    "lixeira-papel": "069", "lixeira-plastico": "139", "lixeira-metal": "085", "lixeira-vidro": "102", "lixeira-organico": "148", "lixeira-rejeito": "165",
+    "robo": "132", "muda": "080", "muda-regada": "090", "pedra": "117", "print-cantos": "010"
+  },
+  "tile": { "terra": "075" },
+  "strip": {
+    "print-topo-portugues": "049", "print-topo-matematica": "154", "print-topo-ciencias": "083", "print-topo-historia": "157", "print-topo-geografia": "152", "print-topo-artes": "158",
+    "print-topo-educacao-fisica": "110", "print-topo-ingles": "134", "print-topo-tecnologia": "060", "print-topo-educacao-financeira": "076", "print-topo-cidadania": "105", "print-topo-ambiente": "106"
+  }
+}

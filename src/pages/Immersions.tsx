@@ -96,7 +96,7 @@ export function ImmersionPage() {
       <div className="split">
         <div className="stack">
           <section className="panel" style={{ padding: 0, overflow: 'hidden', position: 'relative' }} aria-label="Cena da imersão">
-            <Art id={imm.artId} ratio={16 / 8} eager sizes="(max-width: 760px) 85vw, 900px" />
+            <Art key={ch?.artId ?? imm.artId} id={ch?.artId ?? imm.artId} ratio={16 / 8} eager sizes="(max-width: 760px) 85vw, 900px" />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(6,10,34,.75) 0%, rgba(6,10,34,0) 40%, rgba(6,10,34,.9) 100%)', pointerEvents: 'none' }} />
             <div style={{ position: 'absolute', top: 20, left: 24, right: 24 }}>
               <h2 style={{ fontSize: 'clamp(1.3rem,2.4vw,2.2rem)', margin: 0 }}>{ch ? ch.title : imm.title}</h2>
@@ -105,7 +105,7 @@ export function ImmersionPage() {
             <div className="panel tight" style={{ position: 'absolute', left: 16, right: 16, bottom: 16, background: 'rgba(10,14,46,.85)' }}>
               <div className="row nowrap" style={{ alignItems: 'flex-start' }}>
                 <span className="row small desktop-only" style={{ gap: 6, flex: 'none', paddingTop: 2 }}><Map size={18} /> Mapa da história</span>
-                <div className="grow"><Steps items={imm.chapters.map((c, i) => `${i + 1}. ${c.title}`)} current={prog.chapter} /></div>
+                <div className="grow"><Steps items={imm.chapters.map((c, i) => `${i + 1}. ${c.title.replace(/^\s*\d+[.)]\s*/, '')}`)} current={prog.chapter} /></div>
                 <Flag className="desktop-only" color="var(--violet-2)" />
               </div>
             </div>

@@ -4,7 +4,7 @@ import {
   BookOpen, ChevronLeft, Download, Drama, Lightbulb, Lock, MessageCircle, Monitor, Pencil, RotateCcw, Search, Sparkles,
   Undo2, Volume2, VolumeX, FlaskConical, Palette, Users,
 } from 'lucide-react';
-import { Art } from '../components/Art';
+import { Art, Sprite } from '../components/Art';
 import { FavButton, Modal, Notice, PageHead, Tabs, anosLabel, minutes, toast } from '../components/ui';
 import { STORIES, SUBJECT_MAP } from '../content';
 import { actions, useApp } from '../store/store';
@@ -25,6 +25,7 @@ export default function Stories() {
               <h3>{st.title}</h3>
               <p className="small muted" style={{ margin: 0 }}>{st.subtitle}</p>
               <p className="small" style={{ margin: 0 }}>{st.summary}</p>
+              <div className="row" style={{ gap: 4 }}>{st.characters.filter((c) => c.portrait).map((c) => <Sprite key={c.id} id={c.portrait!} size={40} alt={c.name} style={{ borderRadius: '50%', background: `${c.color}33` }} />)}</div>
               <div className="xs muted" style={{ marginTop: 'auto' }}>{minutes(st.durationMin)} · {anosLabel(st.anos)} · {Object.values(st.scenes).filter((x) => x.ending).length} finais possíveis</div>
             </div>
           </Link>
@@ -122,7 +123,12 @@ export function StoryPlayer() {
           {last && <div className="feedback ok" role="status"><strong>Consequência:</strong> {last}</div>}
 
           <section className="panel stack anim-in" key={scene.id} aria-live="polite">
-            {speaker && <span className="badge" style={{ alignSelf: 'flex-start', background: `${speaker.color}33`, borderColor: speaker.color }}>{speaker.name}</span>}
+            {speaker && (
+              <div className="row nowrap" style={{ gap: 12 }}>
+                {speaker.portrait && <Sprite id={speaker.portrait} size={64} alt="" style={{ borderRadius: '50%', background: `${speaker.color}33`, border: `2px solid ${speaker.color}` }} />}
+                <span className="badge" style={{ background: `${speaker.color}33`, borderColor: speaker.color }}>{speaker.name}</span>
+              </div>
+            )}
             <div className="prose prose-lg" style={s.settings.readingLevel === 'ampliado' ? { fontSize: '1.35rem' } : undefined}>
               {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
             </div>
@@ -252,7 +258,7 @@ export function StoryPlayer() {
           </details>
           <details>
             <summary className="small" style={{ cursor: 'pointer', fontWeight: 700 }}>Personagens</summary>
-            <ul className="clean stack-sm mt">{story.characters.map((c) => <li key={c.id} className="small"><strong style={{ color: c.color }}>{c.name}</strong> — {c.description}</li>)}</ul>
+            <ul className="clean stack-sm mt">{story.characters.map((c) => <li key={c.id} className="small row nowrap" style={{ alignItems: 'flex-start' }}>{c.portrait && <Sprite id={c.portrait} size={52} alt="" style={{ flex: 'none', borderRadius: '50%', background: `${c.color}22` }} />}<span><strong style={{ color: c.color }}>{c.name}</strong> — {c.description}</span></li>)}</ul>
           </details>
         </aside>
       </div>

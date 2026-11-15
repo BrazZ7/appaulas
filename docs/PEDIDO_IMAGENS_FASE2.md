@@ -1,4 +1,19 @@
-# AulaViva — Fase 2 de imagens (pedido para o ChatGPT)
+# Ensinaê — Fase 2 de imagens (pedido para o ChatGPT)
+
+## Status (15/11/2026)
+Recuperadas da conversa compartilhada do ChatGPT e integradas ao app: **103 imagens** — 21 cenas das histórias, 9 retratos de personagens, 16 capítulos das imersões, 8 cartas da memória, 6 quadros do ciclo da água, 6 etapas da escrita, 12 faixas coloridas + cantos dos imprimíveis, 8 emblemas de equipe, 6 lixeiras, 5 resíduos e 5 sprites do robô. O verso das cartas foi feito em CSS.
+
+**Ainda faltam (pedir no ChatGPT, poucas imagens por vez, sem ZIP):**
+1. **Jogo dos 7 erros — 3 pares** (não foram gerados). Para cada par: gere a imagem A e depois **edite a A** para criar a B com exatamente 7 diferenças.
+2. **Feira — 10 produtos isolados** com fundo transparente: laranja, maçã, mamão, abacaxi, morango, alface, tomate, cenoura, mandioca, ovos (o ChatGPT gerou pessoas segurando alguns deles, que não servem como item).
+3. **Resíduos — 5 itens isolados** com fundo transparente: jornal, garrafa PET, frasco de xampu sem rótulo, borra de café num filtro, rolo de papel higiênico.
+
+Prompt curto para esses itens:
+```
+Mantendo o estilo das imagens anteriores do Ensinaê, gere UMA imagem por vez, direto aqui no chat, sem ZIP, PNG com fundo transparente, objeto isolado e centralizado, sem pessoas e sem texto: [nome do item].
+```
+
+---
 
 Este arquivo tem duas partes:
 1. **Análise**: onde o app ainda está sem imagem e o que cada imagem vai destravar.

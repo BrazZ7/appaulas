@@ -162,7 +162,7 @@ function Editor({ id }: { id?: string }) {
                           <label className="field"><span>Tipo</span><select className="input" value={b.kind} onChange={(e) => setBlock(b.id, { kind: e.target.value as BlockKind })}>{Object.entries(BLOCK_META).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}</select></label>
                         </div>
                         <label className="field"><span>O que fazer</span><textarea className="input" rows={3} value={b.instructions} onChange={(e) => setBlock(b.id, { instructions: e.target.value })} placeholder={meta.hint} /></label>
-                        <label className="field"><span>Recurso do AulaViva</span>
+                        <label className="field"><span>Recurso do Ensinaê</span>
                           <select className="input" value={b.resourceRef ? `${b.resourceRef.type}:${b.resourceRef.id}` : ''} onChange={(e) => { const [t, rid] = e.target.value.split(':'); setBlock(b.id, { resourceRef: e.target.value ? { type: t as ResourceRef['type'], id: rid } : undefined }); }}>
                             <option value="">Nenhum</option>
                             {REFS.map((g) => <optgroup key={g.label} label={g.label}>{g.options.map((o) => <option key={o.ref.id} value={`${o.ref.type}:${o.ref.id}`}>{o.title}</option>)}</optgroup>)}
