@@ -1008,25 +1008,176 @@ export const IMMERSIONS: Immersion[] = [
     id: 'convivencia',
     title: 'Convivência que se constrói',
     theme: 'Convivência',
-    kicker: 'Em preparo',
-    openingQuestion: 'O que torna um lugar bom para todos conviverem?',
-    summary: 'Uma imersão sobre acordos, escuta, conflitos e cuidado coletivo na escola e no bairro.',
-    subjects: ['politica-cidadania', 'portugues'],
+    kicker: 'Imersão de convivência',
+    openingQuestion: 'O que torna um lugar bom para todos conviverem — e o que cada um de nós faz para isso?',
+    summary:
+      'Uma imersão sobre acordos, escuta, conflitos e cuidado coletivo. A turma investiga como se sente na escola, aprende a separar conflito de violência, pratica a escuta e termina construindo os próprios acordos de convivência.',
+    subjects: ['politica-cidadania', 'portugues', 'educacao-fisica'],
     anos: [6, 7, 8, 9],
-    durationMin: 60,
+    durationMin: 100,
     artId: 'imm-convivencia',
-    status: 'em-preparo',
-    context: [],
-    diversity: [],
-    contemporary: [],
-    chapters: [],
-    challenges: { individual: [], coletivo: [] },
-    teacherScript: { antes: [], durante: [], depois: [] },
-    practicalActivity: { title: 'Acordos de convivência da turma', materials: [], steps: [] },
-    finalConversation: [],
-    printable: { title: 'Convivência que se constrói', items: [] },
-    references: [],
-    pedagogicalNotes: [],
+    status: 'disponivel',
+    context: [
+      'Toda vez que pessoas diferentes dividem um espaço — uma sala, uma casa, um bairro — surgem diferenças de opinião, de ritmo e de jeito de ser. Conflitos fazem parte da convivência e não são, por si só, algo ruim: muitas vezes são a oportunidade de entender o outro e mudar o que não funciona.',
+      'O problema começa quando o conflito vira violência: humilhação, exclusão, ameaça, agressão. Na escola, uma forma frequente é a intimidação sistemática, conhecida como bullying, quando alguém é alvo de ataques repetidos, de propósito, em uma relação desigual de poder. A Lei nº 13.185, de 2015, criou o Programa de Combate à Intimidação Sistemática e pede que as escolas previnam e enfrentem o problema, inclusive quando acontece pela internet (cyberbullying).',
+      'O Estatuto da Criança e do Adolescente (Lei nº 8.069/1990) garante a crianças e adolescentes o direito ao respeito e à dignidade, e coloca família, sociedade e poder público como responsáveis por protegê-los de qualquer tratamento violento, vexatório ou constrangedor.',
+      'Mais do que regras impostas, a convivência melhora quando as pessoas participam da construção dos acordos, aprendem a dizer o que sentem e precisam, e contam com espaços seguros para resolver conflitos — como rodas de conversa, mediação entre colegas e círculos restaurativos.',
+    ],
+    diversity: [
+      'O que é “brincadeira” para um pode ser ofensa para outro: a convivência exige perguntar e escutar como o outro se sente.',
+      'Cada família e comunidade tem costumes diferentes — de jeito de falar, de religião, de comida, de festa. Respeitar não exige concordar, mas exige não humilhar.',
+      'Pessoas com deficiência, estudantes recém-chegados, de outras regiões ou países, e quem foge do “padrão” costumam ser mais alvo de exclusão — e precisam estar no centro dos acordos.',
+      'Conflitos também acontecem entre adultos da escola; a turma pode observar como eles são resolvidos e propor melhorias.',
+    ],
+    contemporary: [
+      'Escolas brasileiras vêm adotando práticas restaurativas, em que quem causou um dano, quem foi atingido e a comunidade conversam para reparar o que aconteceu, em vez de apenas punir.',
+      'Programas de mediação entre colegas preparam estudantes para ajudar outros estudantes a conversar e chegar a um acordo.',
+      'Grêmios estudantis e assembleias de classe dão aos estudantes voz nas decisões sobre o espaço que eles usam todos os dias.',
+      'Campanhas criadas por estudantes — cartazes, vídeos, podcasts — ajudam a enfrentar o cyberbullying e a circulação de ofensas em grupos de mensagens.',
+    ],
+    chapters: [
+      {
+        id: 'como-nos-sentimos',
+        title: '1. Como nos sentimos aqui?',
+        paragraphs: [
+          'Antes de falar de regras, vale perguntar: em quais lugares da escola você se sente à vontade? Em quais fica desconfortável ou com medo? O pátio, o corredor, o banheiro, a fila do lanche, o grupo de mensagens da turma?',
+          'Um “mapa de sensações” da escola, feito de forma anônima, costuma revelar coisas que os adultos não veem. Ele não serve para apontar culpados, e sim para mostrar onde a convivência precisa de cuidado.',
+        ],
+        explore: [
+          'Desenhar no quadro a planta simplificada da escola e pedir que cada estudante marque, com adesivos ou símbolos, onde se sente bem e onde se sente mal — sem escrever nomes.',
+          'Perguntar: o que esses lugares têm em comum? O que poderia mudar neles?',
+        ],
+        classChoice: {
+          prompt: 'Como a turma prefere fazer o mapa de sensações?',
+          options: [
+            { label: 'Anônimo, em papel', outcome: 'Cada estudante marca o mapa individualmente e dobra o papel. O professor junta tudo e apresenta o resultado geral, o que protege quem tem receio de se expor.' },
+            { label: 'Em grupos pequenos', outcome: 'Os grupos conversam e marcam juntos o mapa. A conversa fica mais rica, mas o professor deve lembrar que ninguém é obrigado a contar experiências pessoais.' },
+          ],
+        },
+      },
+      {
+        id: 'conflito-ou-violencia',
+        title: '2. Conflito não é violência',
+        paragraphs: [
+          'Discordar do colega sobre o jogo, disputar a vez de falar ou se irritar com um barulho são conflitos — e podem ser resolvidos com conversa. Já apelidos que humilham, ameaças, empurrões, exclusão proposital e ataques repetidos são violência.',
+          'Quando a agressão é repetida, intencional e acontece contra alguém que tem dificuldade de se defender, chamamos de intimidação sistemática (bullying). Quem assiste também tem um papel: rir, compartilhar ou ficar em silêncio pode reforçar a violência; acolher a vítima e pedir ajuda a um adulto pode interrompê-la.',
+        ],
+        explore: [
+          'Ler situações curtas e classificar: é um conflito, uma violência ou intimidação sistemática? Por quê?',
+          'Discutir o papel de quem assiste: o que é possível fazer com segurança?',
+        ],
+      },
+      {
+        id: 'escutar-e-falar',
+        title: '3. Escutar e falar sem ferir',
+        paragraphs: [
+          'Muitos conflitos crescem porque ninguém se sente escutado. Uma forma de conversar, inspirada na comunicação não violenta, propõe quatro passos: descrever o que aconteceu sem julgar, dizer como se sentiu, dizer o que precisa e fazer um pedido concreto.',
+          'Em vez de “você é um folgado”, por exemplo: “quando você pegou meu material sem pedir, eu fiquei irritado, porque preciso dele para a prova. Você pode me perguntar antes da próxima vez?”. Não é uma fórmula mágica, mas ajuda a falar do problema sem atacar a pessoa.',
+        ],
+        explore: [
+          'Transformar frases agressivas em frases que descrevem, expressam sentimento, necessidade e pedido.',
+          'Praticar em duplas a escuta ativa: um fala por um minuto; o outro repete com as próprias palavras o que entendeu, antes de responder.',
+        ],
+        classChoice: {
+          prompt: 'Em um grupo de mensagens da turma, circula uma montagem zombando de um colega. O que a turma decide fazer?',
+          options: [
+            { label: 'Não compartilhar e acolher o colega', outcome: 'A turma combina não repassar, conversar em particular com o colega para saber como ele está e avisar um adulto de confiança. Na conversa final, discute por que o silêncio também pode ferir.' },
+            { label: 'Pedir para apagar e conversar no grupo', outcome: 'A turma pede que a montagem seja apagada e escreve no grupo por que aquilo machuca. Na conversa final, discute os riscos de expor quem postou e como fazer isso com respeito.' },
+            { label: 'Levar à mediação ou a um círculo', outcome: 'A turma pede ajuda à escola para uma conversa restaurativa entre os envolvidos. Na conversa final, discute a diferença entre punir e reparar o dano.' },
+          ],
+        },
+      },
+      {
+        id: 'nossos-acordos',
+        title: '4. Nossos acordos',
+        paragraphs: [
+          'Regras que a turma ajuda a criar costumam ser mais respeitadas do que regras impostas. Bons acordos são poucos, escritos de forma positiva (“escutamos até o fim” em vez de “não interromper”), dizem o que cada um ganha com eles e preveem o que fazer quando um acordo for quebrado.',
+          'Os acordos também precisam ser revisitados: o que funcionou? O que precisa mudar? A convivência é algo que se constrói todos os dias, não um cartaz que se pendura e se esquece.',
+        ],
+        explore: [
+          'Cada grupo propõe até três acordos; a turma junta os parecidos e vota os mais importantes.',
+          'Para cada acordo, combinar o que fazer quando ele for quebrado — de forma que repare o dano em vez de só punir.',
+        ],
+      },
+    ],
+    challenges: {
+      individual: [
+        'Durante uma semana, anotar uma situação de conflito que viu ou viveu e como ela poderia ter sido resolvida com os quatro passos da conversa.',
+        'Escrever uma mensagem de apoio para alguém que você sabe que está passando por um momento difícil na escola (pode ser entregue ou não).',
+      ],
+      coletivo: [
+        'Construir e assinar os acordos de convivência da turma e marcar uma data para revisá-los.',
+        'Criar uma campanha (cartazes, vídeo curto ou podcast) contra o cyberbullying para a escola.',
+        'Propor ao grêmio ou à direção uma melhoria em um dos lugares do mapa de sensações.',
+      ],
+    },
+    teacherScript: {
+      antes: [
+        'Conhecer como a escola trata casos de violência e bullying (regimento, coordenação, conselho tutelar) para orientar os estudantes com segurança.',
+        'Preparar a planta simplificada da escola e adesivos ou símbolos para o mapa de sensações.',
+        'Selecionar situações fictícias para a atividade “conflito, violência ou bullying?” — sem usar casos reais da turma.',
+        'Combinar com a turma acordos para a própria conversa: sigilo, respeito e direito de não falar.',
+      ],
+      durante: [
+        'Mediar sem expor: se surgir um relato de violência, acolher, agradecer a confiança e conversar depois, em particular.',
+        'Garantir turnos de fala equilibrados e intervir em comentários que humilhem, explicando o porquê.',
+        'Modelar os quatro passos da conversa com exemplos do próprio professor.',
+        'Na escolha do capítulo 3, valorizar argumentos de todas as opções e trazer a perspectiva de quem foi atingido.',
+      ],
+      depois: [
+        'Afixar os acordos em local visível e marcar uma data de revisão (por exemplo, em um mês).',
+        'Encaminhar à coordenação qualquer relato de violência ou de risco, seguindo os protocolos da escola.',
+        'Registrar no portfólio da turma o mapa de sensações e os acordos, para comparar no futuro.',
+        'Observar nas semanas seguintes se os acordos aparecem nas falas e atitudes da turma.',
+      ],
+    },
+    practicalActivity: {
+      title: 'Acordos de convivência da turma',
+      materials: [
+        'Folhas de papel e canetas para os grupos',
+        'Cartolina ou papel pardo para o cartaz final',
+        'Fita adesiva ou ímãs para afixar',
+        'Fichas de acordo impressas (opcional)',
+      ],
+      steps: [
+        'Retomar o mapa de sensações e as situações discutidas nos capítulos anteriores.',
+        'Em grupos de quatro, propor até três acordos escritos de forma positiva.',
+        'Para cada acordo, o grupo responde: por que ele é importante? O que fazemos se ele for quebrado?',
+        'Colar as propostas no quadro, juntar as parecidas e conversar sobre as diferenças.',
+        'Votar os 5 a 7 acordos mais importantes, buscando consenso quando possível.',
+        'Escrever o cartaz final, assinado por todos, e combinar a data de revisão.',
+      ],
+    },
+    finalConversation: [
+      'O que você descobriu sobre como a turma se sente na escola?',
+      'Qual é a diferença entre um conflito e uma violência? Dê um exemplo.',
+      'Qual acordo você acha mais difícil de cumprir? O que pode ajudar?',
+      'O que cada um de nós pode fazer, na próxima semana, para a escola ser um lugar melhor para todos?',
+    ],
+    printable: {
+      title: 'Ficha: um acordo da nossa turma',
+      items: [
+        'Nosso acordo (escrito de forma positiva):',
+        'Por que ele é importante para nós:',
+        'Como sabemos que ele está sendo cumprido (o que vemos e ouvimos):',
+        'O que fazemos quando ele é quebrado (para reparar, não só punir):',
+        'Quem pode nos ajudar se precisarmos:',
+        'Data de revisão do acordo: ___/___/____',
+        'Assinaturas do grupo:',
+      ],
+    },
+    references: [
+      { label: 'Lei nº 13.185/2015 — Programa de Combate à Intimidação Sistemática (bullying)', url: 'https://www.planalto.gov.br' },
+      { label: 'Lei nº 8.069/1990 — Estatuto da Criança e do Adolescente (ECA)', url: 'https://www.planalto.gov.br' },
+      { label: 'Marshall B. Rosenberg — Comunicação não violenta', note: 'livro de referência sobre os quatro passos da conversa' },
+      { label: 'Base Nacional Comum Curricular — competências gerais 8 e 9 (autoconhecimento, empatia e cooperação)', note: 'conferir no documento oficial', url: 'https://basenacionalcomum.mec.gov.br' },
+    ],
+    pedagogicalNotes: [
+      'Nunca peça que estudantes contem publicamente situações de violência que viveram. Ofereça canais individuais e sigilosos.',
+      'Use apenas casos fictícios nas atividades; evite qualquer semelhança com situações reais da turma.',
+      'Se surgir um relato de violência grave, abuso ou risco, siga o protocolo da escola e acione a coordenação — o professor não deve investigar sozinho.',
+      'Acordos não substituem a responsabilidade dos adultos: a escola continua responsável por prevenir e enfrentar a violência.',
+    ],
   },
   {
     id: 'racismo-e-antirracismo',
