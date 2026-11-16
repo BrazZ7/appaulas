@@ -7,6 +7,10 @@ import { brl } from '../engine/feira';
 import { actions, useApp } from '../store/store';
 import { Switch } from '../components/ui';
 import { ItemIcon } from '../components/ItemIcon';
+import { SPRITES } from '../content/art-links';
+
+/** Caminho de uma imagem em public/assets. */
+const A = (id: string) => `${import.meta.env.BASE_URL}assets/${id}.webp`;
 
 export function PrintOptions() {
   const { settings } = useApp();
@@ -17,12 +21,12 @@ type Card = { title: string; description?: string; image?: string; icon?: string
 const kits: {id:string;title:string;instruction:string;cards:Card[]}[]=[];
 for (const game of GAME_ACTIVITIES) {
   const c=game.content;
-  if(c.kind==='memoria') kits.push({id:game.id,title:game.title,instruction:'Recorte e embaralhe as cartas. Encontre os pares de imagem e descrição.',cards:[...c.pairs.map(p=>({title:p.a,image:p.id})),...c.pairs.map(p=>({title:p.b}))]});
-  if(c.kind==='sequencia') kits.push({id:game.id,title:game.title,instruction:'Recorte, embaralhe e coloque as etapas em ordem. Explique o que acontece em cada uma.',cards:c.items.map(it=>({title:it.label,description:it.detail,icon:it.id}))});
-  if(game.id==='classificacao-residuos' && c.kind==='classificacao') kits.push({id:game.id,title:game.title,instruction:'Separe os rótulos das lixeiras e classifique cada resíduo.',cards:[...c.categories.map(cat=>({title:cat.label})),...c.items.map(it=>({title:it.label,icon:it.id}))]});
+  if(c.kind==='memoria') kits.push({id:game.id,title:game.title,instruction:'Recorte e embaralhe as cartas. Encontre os pares de imagem e descrição.',cards:[...c.pairs.map(p=>({title:p.a,image:p.artId ? A(p.artId+'-sm') : undefined})),...c.pairs.map(p=>({title:p.b}))]});
+  if(c.kind==='sequencia') kits.push({id:game.id,title:game.title,instruction:'Recorte, embaralhe e coloque as etapas em ordem. Explique o que acontece em cada uma.',cards:c.items.map(it=>({title:it.label,description:it.detail,image:it.artId ? A(SPRITES.has(it.artId) ? it.artId : it.artId+'-sm') : undefined,icon:it.artId ? undefined : it.id}))});
+  if(game.id==='classificacao-residuos' && c.kind==='classificacao') kits.push({id:game.id,title:game.title,instruction:'Separe os rótulos das lixeiras e classifique cada resíduo.',cards:[...c.categories.map(cat=>({title:cat.label,image:cat.sprite ? A(cat.sprite) : undefined})),...c.items.map(it=>({title:it.label,image:it.sprite ? A(it.sprite) : undefined,icon:it.sprite ? undefined : it.id}))]});
 }
-kits.push({id:'feira',title:'Feira das decisões',instruction:'Recorte as cartas de preço. Escolha os produtos e calcule o valor de uma cesta com seu grupo.',cards:FEIRA_PRODUCTS.map(p=>({title:p.name,image:p.id,description:brl(p.priceCents)+' / '+p.unit}))});
-for (const story of STORIES) kits.push({id:story.id,title:'Personagens · '+story.title,instruction:'Distribua as fichas. Cada estudante interpreta seu personagem e propõe uma continuação para a história.',cards:story.characters.map(c=>({title:c.name,description:c.description,image:c.id}))});
+kits.push({id:'feira',title:'Feira das decisões',instruction:'Recorte as cartas de preço. Escolha os produtos e calcule o valor de uma cesta com seu grupo.',cards:FEIRA_PRODUCTS.map(p=>({title:p.name,image:import.meta.env.BASE_URL+'atividades/'+p.id+'.webp',description:brl(p.priceCents)+' / '+p.unit}))});
+for (const story of STORIES) kits.push({id:story.id,title:'Personagens · '+story.title,instruction:'Distribua as fichas. Cada estudante interpreta seu personagem e propõe uma continuação para a história.',cards:story.characters.map(c=>({title:c.name,description:c.description,image:c.portrait ? A(c.portrait) : undefined}))});
 
 export default function Imprimiveis() {
   const [id,setId]=useState(kits[0].id);
@@ -34,7 +38,7 @@ export default function Imprimiveis() {
     <label className="field"><span>Escolha o material para recortar</span><select className="input" value={id} onChange={e=>setId(e.target.value)}>{kits.map(k=><option key={k.id} value={k.id}>{k.title}</option>)}</select></label>
     <PrintOptions/></section>
     <article className="paper"><h2>{kit.title}</h2><p>{kit.instruction}</p>
-    <div className="cut-grid">{kit.cards.map(c=><div className="cut-card" key={c.title}>{c.image && <img src={'/atividades/'+c.image+'.webp'} alt=""/>}{c.icon && <ItemIcon id={c.icon}/>}<strong>{c.title}</strong>{c.description && <small>{c.description}</small>}</div>)}</div></article>
+    <div className="cut-grid">{kit.cards.map(c=><div className="cut-card" key={c.title}>{c.image && <img src={c.image} alt=""/>}{c.icon && <ItemIcon id={c.icon}/>}<strong>{c.title}</strong>{c.description && <small>{c.description}</small>}</div>)}</div></article>
     <section className="no-print"><h2>Folhas dos jogos com gabarito</h2><p className="small muted">Cartas, cartões de recorte, perguntas e gabarito em folha separada.</p><div className="row">{GAME_ACTIVITIES.map(g=><Link className="btn" key={g.id} to={'/jogos/'+g.id+'/imprimir'}>{g.title}</Link>)}<Link className="btn primary" to="/jogos/bingo/imprimir">Gerador de cartelas de bingo</Link></div></section>
     <section className="no-print"><h2>Sete erros com gabarito</h2><div className="row">{scenes.map(s=><Link className="btn" key={s.id} to={'/sete-erros/'+s.id}>{s.title}</Link>)}</div></section>
     <section className="no-print"><h2>Folhas de aula por matéria</h2><div className="grid auto-fill">{lessons.map(l=><Link className="panel tight" key={l.id} to={'/aulas/'+l.id+'/imprimir'}>{l.title}</Link>)}</div></section>
