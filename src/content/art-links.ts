@@ -15,6 +15,7 @@ export const SPRITES = new Set<string>([
   'equipe-arvoredo', 'equipe-rio-vivo', 'equipe-horizonte', 'equipe-aurora', 'equipe-cometa', 'equipe-floresta', 'equipe-mare', 'equipe-sol',
   'escrita-1-planejar', 'escrita-2-ideias', 'escrita-3-rascunho', 'escrita-4-revisar', 'escrita-5-reescrever', 'escrita-6-publicar',
   'res-papelao', 'res-lata', 'res-pote-vidro', 'res-casca-banana', 'res-fralda',
+  'res-jornal', 'res-garrafa-pet', 'res-frasco-xampu', 'res-borra-cafe', 'res-papel-higienico',
   'lixeira-papel', 'lixeira-plastico', 'lixeira-metal', 'lixeira-vidro', 'lixeira-organico', 'lixeira-rejeito',
   'robo', 'muda', 'muda-regada', 'pedra', 'terra', 'print-cantos',
 ]);
@@ -41,7 +42,8 @@ export function linkImmersions(list: Immersion[]) {
   }
 }
 
-const RES: Record<string, string> = { 'caixa-de-papelao-desmontada': 'res-papelao', 'lata-de-aluminio': 'res-lata', 'pote-de-vidro-de-geleia': 'res-pote-vidro', 'cascas-de-banana': 'res-casca-banana', 'fralda-descartavel-usada': 'res-fralda' };
+const RES: Record<string, string> = { 'caixa-de-papelao-desmontada': 'res-papelao', 'lata-de-aluminio': 'res-lata', 'pote-de-vidro-de-geleia': 'res-pote-vidro', 'cascas-de-banana': 'res-casca-banana', 'fralda-descartavel-usada': 'res-fralda',
+  'jornal-velho': 'res-jornal', 'garrafa-pet-de-refrigerante': 'res-garrafa-pet', 'frasco-vazio-de-xampu': 'res-frasco-xampu', 'borra-de-cafe': 'res-borra-cafe', 'papel-higienico-usado': 'res-papel-higienico' };
 
 export function linkGames(list: GameActivity[]) {
   for (const g of list) {

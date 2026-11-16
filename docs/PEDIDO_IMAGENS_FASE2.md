@@ -3,12 +3,7 @@
 ## Status (16/11/2026)
 **Já está no app:** 103 imagens da fase 2 (cenas, retratos, capítulos, memória, sequências, faixas de impressão, emblemas, lixeiras, robô), **4 jogos dos 7 erros** (feira, rio, biblioteca e barraca de frutas para os anos iniciais) e **os 14 produtos da feira**.
 
-**Falta apenas — 5 resíduos isolados** (fundo transparente): jornal, garrafa PET, frasco de xampu sem rótulo, borra de café num filtro e rolo de papel higiênico.
-
-Prompt (uma imagem por vez, direto no chat, sem ZIP):
-```
-Mantendo o estilo das imagens anteriores do Ensinaê, gere UMA imagem por vez, direto aqui no chat, sem ZIP, PNG com fundo transparente, objeto isolado e centralizado, sem pessoas e sem texto: [nome do item].
-```
+**Pedido de imagens concluído.** Os 5 resíduos (jornal, garrafa PET, frasco de xampu, borra de café e papel higiênico) foram integrados em 16/11/2026.
 
 ---
 
