@@ -30,7 +30,7 @@ function Round({ scene }: { scene: typeof scenes[number] }) {
       <div className="row"><button className="btn" onClick={() => {setFound([]);setMessage('');setKey(false);}}>Recomeçar</button>
       <label><input type="checkbox" checked={key} onChange={e=>setKey(e.target.checked)} /> Incluir gabarito</label></div>
       <PrintOptions /></div>
-    {key && <section className="spot-key"><h2>Gabarito do professor</h2><ol>{scene.spots.map((p,i)=><li key={p.label}>{p.label} — cena {i%2===0?'A':'B'}, {p.y<36?'parte superior':p.y<66?'parte central':'parte inferior'}, {p.x<34?'à esquerda':p.x<67?'ao centro':'à direita'}.</li>)}</ol></section>}
+    {key && <section className="spot-key"><h2>Gabarito do professor</h2><ol>{scene.spots.map((p,i)=><li key={p.label}>{'desc' in p && p.desc ? <>{p.label}: {p.desc} —</> : <>{p.label} — cena {i%2===0?'A':'B'},</>} {p.y<36?'parte superior':p.y<66?'parte central':'parte inferior'}, {p.x<34?'à esquerda':p.x<67?'ao centro':'à direita'}.</li>)}</ol></section>}
   </article>;
 }
 export default function Diferencas() {

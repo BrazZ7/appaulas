@@ -121,5 +121,53 @@
         "label": "ampulheta"
       }
     ]
+  },
+  {
+    "id": "barraca",
+    "title": "Na barraca de frutas (anos iniciais)",
+    "spots": [
+      {
+        "label": "bandeirinha",
+        "desc": "a segunda bandeirinha muda de laranja (A) para violeta (B)",
+        "x": 12,
+        "y": 13
+      },
+      {
+        "label": "luminária",
+        "desc": "a luminária muda de azul (A) para verde (B)",
+        "x": 86,
+        "y": 14
+      },
+      {
+        "label": "balança",
+        "desc": "a balança muda de vermelha (A) para turquesa (B)",
+        "x": 13,
+        "y": 50
+      },
+      {
+        "label": "avental",
+        "desc": "o avental da feirante muda de verde (A) para azul (B)",
+        "x": 50,
+        "y": 48
+      },
+      {
+        "label": "bananas",
+        "desc": "as bananas mudam de amarelas (A) para verdes (B)",
+        "x": 87,
+        "y": 50
+      },
+      {
+        "label": "caixa de madeira",
+        "desc": "a caixa muda de turquesa (A) para lilás (B)",
+        "x": 22,
+        "y": 83
+      },
+      {
+        "label": "melancia",
+        "desc": "as sementes da melancia somem na cena B",
+        "x": 81,
+        "y": 82
+      }
+    ]
   }
 ]
