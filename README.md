@@ -50,7 +50,7 @@ O build é estático (HashRouter): pode ser publicado em qualquer hospedagem de 
 - 8 atividades de jogo em 6 formatos (quiz, memória, sequência, classificação, associação, escape/pistas) + 6 brincadeiras presenciais
 - Simulações funcionais: Feira, Laboratório (energia), Robô, Classificador de IA, Consumo doméstico, Assembleia da cidade
 - 11 imersões completas (todas as previstas)
-- 3 microimersões completas + 5 em preparo
+- 8 microimersões completas para formação de professores
 - 1 projeto interdisciplinar completo com rubrica
 - 15 datas do calendário escolar
 
@@ -76,12 +76,12 @@ Todas as 64 imagens previstas estão listadas em `ASSETS_NECESSARIOS.md`. Enquan
 
 ## Limitações concretas
 
-- **Sem servidor:** não há autenticação, contas, isolamento real entre escolas, sincronização entre dispositivos, nem compartilhamento real entre professores. A troca de perfil (Professor/Aluno/Coordenação) só simula a interface. Não use com dados sensíveis de estudantes.
+- **Login e assinaturas:** prontos para ativar (Supabase + Cakto), passo a passo em [`docs/LOGIN_E_CAKTO.md`](docs/LOGIN_E_CAKTO.md). Sem essa configuração o site roda no modo demonstrativo. O conteúdo criado por cada professor ainda fica no navegador (separado por conta); não há sincronização entre dispositivos nem compartilhamento real entre professores.
 - **Sem sala por código/multiplayer:** os jogos funcionam em modo local (um dispositivo, projetor ou grupos revezando). A tela informa isso; nenhum código falso é exibido.
 - **Higgsfield não integrado:** aparece como “Não conectado”. É possível importar o vídeo exportado manualmente; ele entra “em revisão” e só é aprovado após checklist do professor.
 - **Sem IA generativa:** o “modelo de roteiro” e o “ajustar tempo” são regras simples, com prévia e edição. Nada é salvo ou publicado sem ação do professor.
 - **BNCC:** nenhum código foi atribuído; as habilidades estão descritas em palavras. O modelo aceita códigos com marcação de conferência (`BnccRef.verified`).
-- **Conteúdo em preparo:** 5 microimersões, “Outras línguas” e as áreas do Ensino Médio têm só o espaço reservado. “Orçamento de projeto” e “Organização de evento” existem como roteiros, não como simuladores.
+- **Conteúdo em preparo:** “Outras línguas” e as áreas do Ensino Médio têm só o espaço reservado. “Orçamento de projeto” e “Organização de evento” existem como roteiros, não como simuladores.
 - **Leitura em voz alta** usa a síntese de voz do navegador; a qualidade depende do sistema. Não há áudio gravado nem audiodescrição.
 - **Fontes** vêm do Google Fonts; sem internet, o app usa fontes do sistema.
 - **Armazenamento:** limitado pelo navegador (~5 MB para dados; vídeos no IndexedDB). Use Ajustes → Exportar backup.

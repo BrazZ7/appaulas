@@ -65,7 +65,8 @@ export interface AppState {
   applyProgress: Record<string, { done: string[]; current: number; updatedAt: string }>;
 }
 
-const KEY = 'aulaviva:v1';
+/** Chave do armazenamento local; com login, cada conta tem a sua (aulaviva:v1:<id>). */
+let KEY = 'aulaviva:v1';
 
 function load(): AppState {
   try {
@@ -110,6 +111,15 @@ export const store = {
     listeners.forEach((l) => l());
   },
   persistFailed: () => persistError,
+  /** Com login ativo: separa os dados de cada conta neste navegador. */
+  setScope(userId: string, nome?: string | null) {
+    const next = `aulaviva:v1:${userId}`;
+    if (KEY === next) return;
+    KEY = next;
+    state = load();
+    if (nome) state = { ...state, user: { ...state.user, displayName: nome.split(' ')[0] } };
+    listeners.forEach((l) => l());
+  },
   exportJson: () => JSON.stringify(state, null, 2),
   importJson(text: string) {
     const parsed = JSON.parse(text) as AppState;

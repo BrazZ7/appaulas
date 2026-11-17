@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { createHashRouter, Link, RouterProvider } from 'react-router-dom';
 import { Layout } from './components/Layout';
+import { AuthGate } from './components/AuthGate';
 import Home from './pages/Home';
 
 const Library = lazy(() => import('./pages/Library'));
@@ -34,6 +35,7 @@ const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const Student = lazy(() => import('./pages/Student'));
 const StudentPortfolio = lazy(() => import('./pages/Student').then((m) => ({ default: m.StudentPortfolio })));
 const Coordination = lazy(() => import('./pages/Coordination'));
+const Admin = lazy(() => import('./pages/Admin'));
 
 function NotFound() {
   return (
@@ -86,11 +88,16 @@ const router = createHashRouter([
       { path: 'aluno', element: wrap(<Student />) },
       { path: 'aluno/portfolio', element: wrap(<StudentPortfolio />) },
       { path: 'coordenacao', element: wrap(<Coordination />) },
+      { path: 'admin', element: wrap(<Admin />) },
       { path: '*', element: <NotFound /> },
     ],
   },
 ]);
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthGate>
+      <RouterProvider router={router} />
+    </AuthGate>
+  );
 }

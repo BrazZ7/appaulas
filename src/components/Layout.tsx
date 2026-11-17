@@ -2,9 +2,10 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   Clapperboard, ChevronDown, Compass, Gamepad2, GraduationCap, House, Layers, Menu, Minimize, Search, Settings,
-  Users, CalendarDays, NotebookPen, Library, Bell,
+  Users, CalendarDays, NotebookPen, Library, Bell, Shield, LogOut,
 } from 'lucide-react';
 import { actions, useApp } from '../store/store';
+import { useAuth } from '../lib/auth';
 import { buildIndex, search } from '../content';
 import { ROLE_LABEL } from '../store/permissions';
 import { Modal, Toasts } from './ui';
@@ -132,6 +133,7 @@ function SearchBox() {
 
 function ProfileMenu() {
   const s = useApp();
+  const auth = useAuth();
   const [open, setOpen] = useState(false);
   const nav = useNavigate();
   const setRole = (r: Role) => {
@@ -149,22 +151,28 @@ function ProfileMenu() {
         <ChevronDown className="hide-mobile" />
       </button>
       <Modal open={open} onClose={() => setOpen(false)} title="Perfil e ajustes">
-        <p className="muted small">
-          <strong>Modo demonstrativo:</strong> não há login nem servidor. Trocar de perfil apenas simula o que cada pessoa vê — não é um controle de acesso seguro.
-        </p>
+        {auth.ativo ? (
+          <p className="small"><strong>{auth.perfil?.nome || auth.perfil?.email}</strong><br /><span className="muted">{auth.perfil?.email} · {auth.perfil?.role === 'superadmin' ? 'Superadmin' : 'Assinante'}</span></p>
+        ) : (
+          <p className="muted small">
+            <strong>Modo demonstrativo:</strong> não há login nem servidor. Trocar de perfil apenas simula o que cada pessoa vê — não é um controle de acesso seguro.
+          </p>
+        )}
         <div className="stack">
-          <span className="label">Ver o Ensinaê como</span>
-          <div className="row">
+          {(!auth.ativo || auth.perfil?.role === 'superadmin') && <span className="label">Ver o Ensinaê como</span>}
+          {(!auth.ativo || auth.perfil?.role === 'superadmin') && <div className="row">
             {(['professor', 'aluno', 'coordenacao'] as Role[]).map((r) => (
               <button key={r} className={`chip ${s.user.role === r ? 'on' : ''}`} aria-pressed={s.user.role === r} onClick={() => setRole(r)}>
                 {ROLE_LABEL[r]}
               </button>
             ))}
-          </div>
+          </div>}
           <hr className="sep" />
           <button className="btn" onClick={() => { setOpen(false); nav('/ajustes'); }}>
             <Settings /> Acessibilidade, dados e ajustes
           </button>
+          {auth.perfil?.role === 'superadmin' && <button className="btn" onClick={() => { setOpen(false); nav('/admin'); }}><Shield /> Assinantes e acessos</button>}
+          {auth.ativo && <button className="btn ghost" onClick={() => auth.sair()}><LogOut /> Sair</button>}
         </div>
       </Modal>
     </>
@@ -173,6 +181,7 @@ function ProfileMenu() {
 
 export function Layout() {
   useHtmlClasses();
+  const auth = useAuth();
   const s = useApp();
   const loc = useLocation();
   const [more, setMore] = useState(false);
@@ -208,6 +217,11 @@ export function Layout() {
                 </NavLink>
               ))}
             </>
+          )}
+          {auth.perfil?.role === 'superadmin' && (
+            <NavLink to="/admin" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} title="Assinantes e acessos">
+              <Shield /> <span>Assinantes</span>
+            </NavLink>
           )}
         </nav>
         <div className="sidebar-foot stack-sm">
