@@ -49,7 +49,7 @@ O build é estático (HashRouter): pode ser publicado em qualquer hospedagem de 
 - 3 histórias ramificadas (12–13 cenas, 3–4 finais cada, caminhos condicionados por estados)
 - 8 atividades de jogo em 6 formatos (quiz, memória, sequência, classificação, associação, escape/pistas) + 6 brincadeiras presenciais
 - Simulações funcionais: Feira, Laboratório (energia), Robô, Classificador de IA, Consumo doméstico, Assembleia da cidade
-- 4 imersões completas + 7 temas em preparo
+- 11 imersões completas (todas as previstas)
 - 3 microimersões completas + 5 em preparo
 - 1 projeto interdisciplinar completo com rubrica
 - 15 datas do calendário escolar
@@ -81,7 +81,7 @@ Todas as 64 imagens previstas estão listadas em `ASSETS_NECESSARIOS.md`. Enquan
 - **Higgsfield não integrado:** aparece como “Não conectado”. É possível importar o vídeo exportado manualmente; ele entra “em revisão” e só é aprovado após checklist do professor.
 - **Sem IA generativa:** o “modelo de roteiro” e o “ajustar tempo” são regras simples, com prévia e edição. Nada é salvo ou publicado sem ação do professor.
 - **BNCC:** nenhum código foi atribuído; as habilidades estão descritas em palavras. O modelo aceita códigos com marcação de conferência (`BnccRef.verified`).
-- **Conteúdo em preparo:** 7 imersões, 5 microimersões, “Outras línguas” e as áreas do Ensino Médio têm só o espaço reservado. “Orçamento de projeto” e “Organização de evento” existem como roteiros, não como simuladores.
+- **Conteúdo em preparo:** 5 microimersões, “Outras línguas” e as áreas do Ensino Médio têm só o espaço reservado. “Orçamento de projeto” e “Organização de evento” existem como roteiros, não como simuladores.
 - **Leitura em voz alta** usa a síntese de voz do navegador; a qualidade depende do sistema. Não há áudio gravado nem audiodescrição.
 - **Fontes** vêm do Google Fonts; sem internet, o app usa fontes do sistema.
 - **Armazenamento:** limitado pelo navegador (~5 MB para dados; vídeos no IndexedDB). Use Ajustes → Exportar backup.
