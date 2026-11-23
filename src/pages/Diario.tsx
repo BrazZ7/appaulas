@@ -3,6 +3,7 @@
  * histórico e relatórios exportáveis para o sistema da escola.
  */
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   CalendarCheck, Check, CopyPlus, Download, FileSpreadsheet, Pencil, Plus, Printer, Trash2, UserCheck,
 } from 'lucide-react';
@@ -289,6 +290,7 @@ export function PlanejamentoTab({ t }: { t: Turma }) {
               <div className="row">
                 <button className="btn sm ghost" onClick={() => setEdit(structuredClone(i))}><Pencil /> Editar</button>
                 <button className="btn sm ghost" onClick={() => actions.saveItemTurma({ ...i, status: i.status === 'aplicado' ? 'planejado' : 'aplicado' })}><Check /> {i.status === 'aplicado' ? 'Desmarcar' : 'Marcar aplicado'}</button>
+                {i.provaId && <Link className="btn sm ghost" to={`/provas/${i.provaId}/imprimir`}><Printer /> Abrir prova</Link>}
                 {av ? <span className="xs muted">Notas em: {av.title}</span> : <button className="btn sm ghost" onClick={() => virarAvaliacao(i)}><Plus /> Lançar notas</button>}
               </div>
             </article>

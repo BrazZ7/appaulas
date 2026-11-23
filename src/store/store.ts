@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import type {
-  AgendaItem, Avaliacao, Chamada, ExitTicket, GameSession, ItemTurma, Lesson, Observation, Organization, Production, Role, Rubric,
+  AgendaItem, Avaliacao, Chamada, ExitTicket, GameSession, ItemTurma, Lesson, Observation, Organization, Production, Prova, Role, Rubric,
   SelfAssessment, Turma, User, VideoProject,
 } from '../types/models';
 import { importarAvaliacao, importarItem } from '../lib/diario';
@@ -69,6 +69,8 @@ export interface AppState {
   avaliacoes: Avaliacao[];
   itensTurma: ItemTurma[];
   diarioConfig: { mediaMinima: number; freqMinima: number };
+  /** Provas criadas pelo professor (as prontas ficam no acervo). */
+  provas: Prova[];
 }
 
 /** Chave do armazenamento local; com login, cada conta tem a sua (aulaviva:v1:<id>). */
@@ -318,6 +320,13 @@ export const actions = {
       const novasAvs = destinos.flatMap((d) => avs.map((a) => importarAvaliacao(a, d, uid('av'), t)));
       return { ...s, itensTurma: [...novosItens, ...s.itensTurma], avaliacoes: [...s.avaliacoes, ...novasAvs] };
     });
+  },
+  saveProva(p: Prova) {
+    const v = { ...p, pronta: false, updatedAt: now() };
+    store.update((s) => ({ ...s, provas: s.provas.some((x) => x.id === v.id) ? s.provas.map((x) => (x.id === v.id ? v : x)) : [v, ...s.provas] }));
+  },
+  deleteProva(id: string) {
+    store.update((s) => ({ ...s, provas: s.provas.filter((p) => p.id !== id) }));
   },
   setDiarioConfig(p: Partial<AppState['diarioConfig']>) {
     store.update((s) => ({ ...s, diarioConfig: { ...s.diarioConfig, ...p } }));

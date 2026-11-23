@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   Clapperboard, ChevronDown, Compass, Gamepad2, GraduationCap, House, Layers, Menu, Minimize, Search, Settings,
   Users, CalendarDays, NotebookPen, Library, Bell, Shield, LogOut,
+  FileCheck2,
 } from 'lucide-react';
 import { actions, useApp } from '../store/store';
 import { useAuth } from '../lib/auth';
@@ -45,6 +46,7 @@ const NAV_TEACHER = [
 ];
 const NAV_EXTRA = [
   { to: '/aulas', label: 'Planejador', icon: NotebookPen },
+  { to: '/provas', label: 'Provas', icon: FileCheck2 },
   { to: '/calendario', label: 'Calendário', icon: CalendarDays },
   { to: '/formacao', label: 'Formação do professor', icon: GraduationCap },
 ];

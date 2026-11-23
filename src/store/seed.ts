@@ -72,5 +72,6 @@ export function seedState(): AppState {
       { id: 'it-demo-2', turmaId: 't-7a', tipo: 'prova', title: 'Avaliação — frações e porcentagens', description: 'Prova individual de frações e porcentagens, com questões de cálculo e situações do dia a dia.', date: day(7), status: 'planejado', createdAt: day(0), updatedAt: day(0) },
     ],
     diarioConfig: { mediaMinima: 6, freqMinima: 75 },
+    provas: [],
   };
 }

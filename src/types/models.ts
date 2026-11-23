@@ -406,6 +406,8 @@ export interface ItemTurma {
   status: 'planejado' | 'aplicado';
   /** Conteúdo do acervo ligado (aula, jogo, imersão…). */
   ref?: ResourceRef;
+  /** Prova do criador de provas ligada a este item. */
+  provaId?: ID;
   /** De qual item este foi importado (outra turma). */
   importadoDe?: ID;
   createdAt: string;
@@ -583,4 +585,56 @@ export interface ThemeDate {
   title: string;
   description: string;
   suggestions: { label: string; ref?: ResourceRef }[];
+}
+
+// ───────────── Provas ─────────────
+
+export type QuestaoTipo = 'multipla' | 'vf' | 'dissertativa' | 'completar' | 'associacao' | 'ordenar' | 'desenho';
+
+/** Ilustração desenhada pelo próprio app (SVG), com parâmetros — ex.: fração 3/8, relógio 10:15. */
+export interface FiguraRef { kind: 'figura'; id: string; params?: Record<string, number | string> }
+/** Imagem enviada pelo professor (guardada no IndexedDB deste navegador). */
+export interface ArquivoRef { kind: 'arquivo'; fileId: ID; alt: string }
+export type QuestaoImagem = FiguraRef | ArquivoRef;
+
+export interface Questao {
+  id: ID;
+  tipo: QuestaoTipo;
+  enunciado: string;
+  /** Versão curta e direta do enunciado, usada nas provas adaptadas (TEA/TDAH). */
+  enunciadoSimples?: string;
+  imagem?: QuestaoImagem;
+  /** multipla/ordenar: opções; vf: afirmações; associacao: coluna A. */
+  itens: string[];
+  /** associacao: coluna B (na ordem correta em relação a `itens`). */
+  pares?: string[];
+  /** multipla: índice da correta; vf: lista de V/F; ordenar: a ordem correta é a de `itens`. */
+  correta?: number;
+  vf?: boolean[];
+  /** Resposta esperada (dissertativa/completar) — vai para o gabarito. */
+  resposta?: string;
+  /** Linhas para resposta (dissertativa) ou altura da caixa (desenho). */
+  linhas?: number;
+  pontos: number;
+  subject?: SubjectId;
+  anos?: number[];
+  /** Questão do banco de onde veio. */
+  origem?: ID;
+}
+
+export type PerfilAdaptacao = 'padrao' | 'tea' | 'tdah' | 'dislexia' | 'baixa-visao';
+
+export interface Prova {
+  id: ID;
+  title: string;
+  subject?: SubjectId;
+  ano?: number;
+  instrucoes: string;
+  questoes: Questao[];
+  /** Perfil padrão de impressão desta prova. */
+  perfil: PerfilAdaptacao;
+  /** Prova pronta do acervo (somente leitura; ao editar vira uma cópia). */
+  pronta?: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
