@@ -37,6 +37,8 @@ const StudentPortfolio = lazy(() => import('./pages/Student').then((m) => ({ def
 const Coordination = lazy(() => import('./pages/Coordination'));
 const Admin = lazy(() => import('./pages/Admin'));
 const Provas = lazy(() => import('./pages/Provas'));
+const Desafios = lazy(() => import('./pages/Desafios'));
+const DesafioPage = lazy(() => import('./pages/Desafios').then((m) => ({ default: m.DesafioPage })));
 const ProvaEditor = lazy(() => import('./pages/Provas').then((m) => ({ default: m.ProvaEditor })));
 const ProvaPrint = lazy(() => import('./pages/Provas').then((m) => ({ default: m.ProvaPrint })));
 
@@ -83,6 +85,8 @@ const router = createHashRouter([
       { path: 'aulas/:id/editar', element: wrap(<LessonEditor />) },
       { path: 'aulas/:id/aplicar', element: wrap(<LessonApply />) },
       { path: 'aulas/:id/imprimir', element: wrap(<LessonPrint />) },
+      { path: 'desafios', element: wrap(<Desafios />) },
+      { path: 'desafios/:id', element: wrap(<DesafioPage />) },
       { path: 'provas', element: wrap(<Provas />) },
       { path: 'provas/nova', element: wrap(<ProvaEditor />) },
       { path: 'provas/:id/editar', element: wrap(<ProvaEditor />) },

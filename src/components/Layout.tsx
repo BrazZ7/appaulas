@@ -3,7 +3,7 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   Clapperboard, ChevronDown, Compass, Gamepad2, GraduationCap, House, Layers, Menu, Minimize, Search, Settings,
   Users, CalendarDays, NotebookPen, Library, Bell, Shield, LogOut,
-  FileCheck2,
+  FileCheck2, Trophy,
 } from 'lucide-react';
 import { actions, useApp } from '../store/store';
 import { useAuth } from '../lib/auth';
@@ -41,6 +41,7 @@ const NAV_TEACHER = [
   { to: '/imersoes', label: 'Imersões', icon: Compass },
   { to: '/jogos', label: 'Jogos', icon: Gamepad2 },
   { to: '/imprimiveis', label: 'Imprimíveis', icon: Library },
+  { to: '/desafios', label: 'Desafios', icon: Trophy },
   { to: '/estudio', label: 'Estúdio', icon: Clapperboard },
   { to: '/turmas', label: 'Minhas turmas', icon: Users },
 ];

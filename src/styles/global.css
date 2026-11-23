@@ -536,3 +536,80 @@ html:not(.print-color) .scene-pair img {filter:none}
   .prova-doc .q-num { background: #111 !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .prova-doc svg * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+/* ─────────── Cenas animadas (passo a passo) ─────────── */
+.cena .an-pour { animation: an-pour 2.4s ease-in-out infinite; transform-box: view-box; }
+.cena .an-fill { animation: an-fill 2.4s ease-in-out infinite; transform-box: view-box; }
+.cena .an-flow { animation: an-flow .6s linear infinite; }
+.cena .an-stir { animation: an-stir 1.6s ease-in-out infinite; transform-box: view-box; }
+.cena .an-bubble { animation: an-bubble 1.6s ease-out infinite; }
+.cena .an-drop { animation: an-drop 1.5s ease-in infinite; }
+.cena .an-rain { animation: an-drop .9s linear infinite; }
+.cena .an-slide { animation: an-slide 2.6s ease-in-out infinite alternate; }
+.cena .an-slide-x { animation: an-slidex 2.6s ease-in-out infinite alternate; }
+.cena .an-snipA { animation: an-snipA .5s ease-in-out infinite alternate; transform-box: view-box; }
+.cena .an-snipB { animation: an-snipB .5s ease-in-out infinite alternate; transform-box: view-box; }
+.cena .an-drop-in { animation: an-dropin 2.4s ease-in-out infinite; }
+.cena .an-grow { animation: an-grow 3s ease-out infinite; transform-box: view-box; }
+.cena .an-spin { animation: an-spin 1.6s linear infinite; transform-box: view-box; }
+.cena .an-spin-slow { animation: an-spin 9s linear infinite; transform-box: view-box; }
+.cena .an-heat { animation: an-heat 1.6s ease-in-out infinite; }
+.cena .an-glow { animation: an-glow 1.4s ease-in-out infinite; }
+.cena .an-attract { animation: an-attract 1.8s ease-in infinite; }
+.cena .an-write { stroke-dasharray: 90; animation: an-write 2.5s ease-in-out infinite; }
+.cena .an-pen { animation: an-pen 2.5s ease-in-out infinite; }
+.cena .an-clap { animation: an-clap 1.4s ease-in-out infinite; transform-box: view-box; }
+.cena .an-blink { animation: an-glow .9s steps(2) infinite; }
+.cena .an-curtainL { animation: an-curL 4s ease-in-out infinite alternate; transform-box: view-box; }
+.cena .an-curtainR { animation: an-curR 4s ease-in-out infinite alternate; transform-box: view-box; }
+.cena .an-wave { animation: an-glow 1.2s ease-in-out infinite; }
+.cena .an-bob { animation: an-bob 1.2s ease-in-out infinite; transform-box: view-box; }
+.cena .an-bob2 { animation: an-bob 1.2s ease-in-out .6s infinite; transform-box: view-box; }
+.cena .an-pop { animation: an-pop 1.6s ease-in-out infinite; }
+.cena .an-twinkle { animation: an-twinkle 1.6s ease-in-out infinite; transform-box: view-box; }
+.cena .an-beat { animation: an-beat .5s ease-in-out infinite alternate; transform-box: view-box; }
+.cena .an-hit { animation: an-hit .5s ease-in-out infinite alternate; transform-box: view-box; }
+.cena .an-fall { animation: an-fall 2.8s ease-in infinite; }
+.cena .an-flicker { animation: an-flicker .35s ease-in-out infinite alternate; transform-box: view-box; }
+.cena .an-flag { animation: an-flag 1.2s ease-in-out infinite alternate; transform-box: view-box; }
+.cena .an-play { animation: an-play 3s linear infinite; }
+.cena .an-popcorn { animation: an-popcorn 1.5s ease-out infinite; }
+@keyframes an-pour { 0%, 15% { transform: rotate(0); } 45%, 75% { transform: rotate(38deg); } 100% { transform: rotate(0); } }
+@keyframes an-fill { 0%, 40% { transform: scaleY(.15); } 80%, 100% { transform: scaleY(1); } }
+@keyframes an-flow { to { stroke-dashoffset: -10; } }
+@keyframes an-stir { 0%, 100% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } }
+@keyframes an-bubble { 0% { transform: translate(0, 0); opacity: 1; } 100% { transform: translate(var(--dx, 0), -46px); opacity: 0; } }
+@keyframes an-drop { 0% { transform: translateY(-6px); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(18px); opacity: 0; } }
+@keyframes an-slide { from { transform: translateX(-14px); } to { transform: translateX(22px); } }
+@keyframes an-slidex { from { transform: translateX(0); } to { transform: translateX(30px); } }
+@keyframes an-snipA { from { transform: rotate(-12deg); } to { transform: rotate(2deg); } }
+@keyframes an-snipB { from { transform: rotate(12deg); } to { transform: rotate(-2deg); } }
+@keyframes an-dropin { 0%, 15% { transform: translateY(-14px); } 55%, 100% { transform: translateY(20px); } }
+@keyframes an-grow { 0% { transform: scale(.1); } 70%, 100% { transform: scale(1); } }
+@keyframes an-spin { to { transform: rotate(360deg); } }
+@keyframes an-heat { 0%, 100% { transform: translateY(0); opacity: .3; } 50% { transform: translateY(-8px); opacity: 1; } }
+@keyframes an-glow { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+@keyframes an-attract { 0% { transform: translateY(0); } 60%, 100% { transform: translateY(-30px); } }
+@keyframes an-write { 0% { stroke-dashoffset: 90; } 60%, 100% { stroke-dashoffset: 0; } }
+@keyframes an-pen { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-60px, -40px); } }
+@keyframes an-clap { 0%, 40% { transform: rotate(-24deg); } 55%, 100% { transform: rotate(0); } }
+@keyframes an-curL { from { transform: scaleX(1); } to { transform: scaleX(.45); } }
+@keyframes an-curR { from { transform: scaleX(1); } to { transform: scaleX(.45); } }
+@keyframes an-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes an-pop { 0%, 100% { opacity: 0; transform: translateY(4px); } 30%, 70% { opacity: 1; transform: translateY(0); } }
+@keyframes an-twinkle { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
+@keyframes an-beat { from { transform: scale(1); } to { transform: scale(1.05); } }
+@keyframes an-hit { from { transform: rotate(0); } to { transform: rotate(-16deg); } }
+@keyframes an-fall { 0% { transform: translate(0, 0) rotate(0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translate(14px, 60px) rotate(160deg); opacity: 0; } }
+@keyframes an-flicker { from { transform: scale(1, 1); } to { transform: scale(.94, 1.08); } }
+@keyframes an-flag { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+@keyframes an-play { from { transform: translateX(0); } to { transform: translateX(140px); } }
+@keyframes an-popcorn { 0% { transform: translateY(0); } 40% { transform: translateY(-16px); } 100% { transform: translateY(0); } }
+@media print { .cena * { animation: none !important; } }
+
+/* Passo a passo */
+.passo-grid { display: grid; grid-template-columns: minmax(160px, 260px) 1fr; gap: 18px; align-items: start; }
+@media (max-width: 640px) { .passo-grid { grid-template-columns: 1fr; } }
+.roteiro-fala { border-left: 4px solid var(--accent, #2ee6d6); padding: 4px 10px; margin: 6px 0; }
+.roteiro-fala b { text-transform: uppercase; font-size: .85em; letter-spacing: .04em; }
+@media print { .passo-print { break-inside: avoid; display: grid; grid-template-columns: 150px 1fr; gap: 12px; margin-bottom: 12px; } }
