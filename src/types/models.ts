@@ -351,9 +351,66 @@ export interface Student {
   id: ID;
   /** Apenas nome de exibição/apelido. Dados sensíveis não são coletados. */
   displayName: string;
+  /** Número na lista de chamada / matrícula da escola (opcional, para exportar ao sistema da escola). */
+  numero?: string;
 }
 
 export interface Group { id: ID; name: string; studentIds: ID[] }
+
+// ───────────── Diário da turma ─────────────
+
+/** P = presente, F = falta, J = falta justificada. */
+export type Presenca = 'P' | 'F' | 'J';
+
+export interface Chamada {
+  id: ID;
+  turmaId: ID;
+  date: string; // yyyy-mm-dd
+  /** Número de aulas (tempos) do dia — cada falta conta esse número de vezes. */
+  aulas: number;
+  conteudo: string;
+  presencas: Record<ID, Presenca>;
+  createdAt: string;
+}
+
+export type AvaliacaoTipo = 'prova' | 'trabalho' | 'atividade' | 'desafio' | 'participacao' | 'recuperacao';
+
+export interface Avaliacao {
+  id: ID;
+  turmaId: ID;
+  title: string;
+  tipo: AvaliacaoTipo;
+  date: string; // yyyy-mm-dd
+  /** Período letivo (1 a 4). */
+  periodo: number;
+  notaMax: number;
+  peso: number;
+  /** Nota por estudante; ausente = sem nota lançada. */
+  notas: Record<ID, number>;
+  /** Item do planejamento de onde a avaliação veio, se houver. */
+  itemId?: ID;
+  createdAt: string;
+}
+
+export type ItemTurmaTipo = 'atividade' | 'desafio' | 'tema' | 'prova';
+
+/** Algo que o professor planeja para uma turma: atividade, desafio, tema de projeto ou prova. */
+export interface ItemTurma {
+  id: ID;
+  turmaId: ID;
+  tipo: ItemTurmaTipo;
+  title: string;
+  description: string;
+  /** Data prevista (yyyy-mm-dd). */
+  date?: string;
+  status: 'planejado' | 'aplicado';
+  /** Conteúdo do acervo ligado (aula, jogo, imersão…). */
+  ref?: ResourceRef;
+  /** De qual item este foi importado (outra turma). */
+  importadoDe?: ID;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export interface Turma {
   id: ID;

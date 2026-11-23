@@ -65,5 +65,12 @@ export function seedState(): AppState {
     recent: [],
     doubts: [],
     applyProgress: {},
+    chamadas: [],
+    avaliacoes: [],
+    itensTurma: [
+      { id: 'it-demo-1', turmaId: 't-7a', tipo: 'desafio', title: 'Desafio da turma: nosso filme', description: 'A turma escolhe um tema, escreve o roteiro em grupos e grava um curta de até 3 minutos.', date: day(14), status: 'planejado', createdAt: day(0), updatedAt: day(0) },
+      { id: 'it-demo-2', turmaId: 't-7a', tipo: 'prova', title: 'Avaliação — frações e porcentagens', description: 'Prova individual de frações e porcentagens, com questões de cálculo e situações do dia a dia.', date: day(7), status: 'planejado', createdAt: day(0), updatedAt: day(0) },
+    ],
+    diarioConfig: { mediaMinima: 6, freqMinima: 75 },
   };
 }

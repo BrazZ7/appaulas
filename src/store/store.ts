@@ -1,8 +1,9 @@
 import { useSyncExternalStore } from 'react';
 import type {
-  AgendaItem, ExitTicket, GameSession, Lesson, Observation, Organization, Production, Role, Rubric,
+  AgendaItem, Avaliacao, Chamada, ExitTicket, GameSession, ItemTurma, Lesson, Observation, Organization, Production, Role, Rubric,
   SelfAssessment, Turma, User, VideoProject,
 } from '../types/models';
+import { importarAvaliacao, importarItem } from '../lib/diario';
 import type { StoryRun } from '../engine/story';
 import type { LabInputs } from '../engine/lab';
 import { seedState } from './seed';
@@ -63,6 +64,11 @@ export interface AppState {
   doubts: Doubt[];
   /** Progresso de aplicação de cada aula (blocos concluídos) — continuidade entre aulas. */
   applyProgress: Record<string, { done: string[]; current: number; updatedAt: string }>;
+  /** Diário da turma: chamadas, avaliações com notas e o planejamento (atividades, desafios, temas, provas). */
+  chamadas: Chamada[];
+  avaliacoes: Avaliacao[];
+  itensTurma: ItemTurma[];
+  diarioConfig: { mediaMinima: number; freqMinima: number };
 }
 
 /** Chave do armazenamento local; com login, cada conta tem a sua (aulaviva:v1:<id>). */
@@ -73,7 +79,7 @@ function load(): AppState {
     const raw = localStorage.getItem(KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as AppState;
-      if (parsed.version === 1) return { ...seedState(), ...parsed, settings: { ...seedState().settings, ...parsed.settings } };
+      if (parsed.version === 1) return { ...seedState(), ...parsed, settings: { ...seedState().settings, ...parsed.settings }, diarioConfig: { ...seedState().diarioConfig, ...parsed.diarioConfig } };
     }
   } catch {
     /* armazenamento indisponível: segue com estado em memória */
@@ -268,5 +274,52 @@ export const actions = {
   },
   toggleRelease(key: string) {
     store.update((s) => ({ ...s, released: s.released.includes(key) ? s.released.filter((r) => r !== key) : [...s.released, key] }));
+  },
+
+  // ───── Diário da turma ─────
+  saveChamada(c: Chamada) {
+    store.update((s) => ({ ...s, chamadas: s.chamadas.some((x) => x.id === c.id) ? s.chamadas.map((x) => (x.id === c.id ? c : x)) : [...s.chamadas, c] }));
+  },
+  deleteChamada(id: string) {
+    store.update((s) => ({ ...s, chamadas: s.chamadas.filter((c) => c.id !== id) }));
+  },
+  saveAvaliacao(a: Avaliacao) {
+    store.update((s) => ({ ...s, avaliacoes: s.avaliacoes.some((x) => x.id === a.id) ? s.avaliacoes.map((x) => (x.id === a.id ? a : x)) : [...s.avaliacoes, a] }));
+  },
+  deleteAvaliacao(id: string) {
+    store.update((s) => ({ ...s, avaliacoes: s.avaliacoes.filter((a) => a.id !== id) }));
+  },
+  setNota(avaliacaoId: string, studentId: string, nota: number | undefined) {
+    store.update((s) => ({
+      ...s,
+      avaliacoes: s.avaliacoes.map((a) => {
+        if (a.id !== avaliacaoId) return a;
+        const notas = { ...a.notas };
+        if (nota === undefined) delete notas[studentId];
+        else notas[studentId] = nota;
+        return { ...a, notas };
+      }),
+    }));
+  },
+  saveItemTurma(i: ItemTurma) {
+    const it = { ...i, updatedAt: now() };
+    store.update((s) => ({ ...s, itensTurma: s.itensTurma.some((x) => x.id === it.id) ? s.itensTurma.map((x) => (x.id === it.id ? it : x)) : [it, ...s.itensTurma] }));
+  },
+  deleteItemTurma(id: string) {
+    store.update((s) => ({ ...s, itensTurma: s.itensTurma.filter((i) => i.id !== id) }));
+  },
+  /** Copia itens de planejamento (e, opcionalmente, avaliações sem notas) para outras turmas. */
+  importarParaTurmas(itemIds: string[], avaliacaoIds: string[], destinos: string[]) {
+    store.update((s) => {
+      const t = now();
+      const itens = s.itensTurma.filter((i) => itemIds.includes(i.id));
+      const avs = s.avaliacoes.filter((a) => avaliacaoIds.includes(a.id));
+      const novosItens = destinos.flatMap((d) => itens.map((i) => importarItem(i, d, uid('it'), t)));
+      const novasAvs = destinos.flatMap((d) => avs.map((a) => importarAvaliacao(a, d, uid('av'), t)));
+      return { ...s, itensTurma: [...novosItens, ...s.itensTurma], avaliacoes: [...s.avaliacoes, ...novasAvs] };
+    });
+  },
+  setDiarioConfig(p: Partial<AppState['diarioConfig']>) {
+    store.update((s) => ({ ...s, diarioConfig: { ...s.diarioConfig, ...p } }));
   },
 };

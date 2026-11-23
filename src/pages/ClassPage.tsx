@@ -10,8 +10,10 @@ import { shuffle } from '../engine/games';
 import { download } from '../lib/files';
 import { actions, now, uid, useApp } from '../store/store';
 import type { ExitTicket, Observation, Rubric, Turma } from '../types/models';
+import { ChamadaTab, HistoricoTab, NotasTab, NumeroInput, PlanejamentoTab, RelatoriosTab } from './Diario';
+import { CalendarCheck, ClipboardList, FileBarChart, GraduationCap, History } from 'lucide-react';
 
-type Tab = 'visao' | 'grupos' | 'avaliacao' | 'portfolio';
+type Tab = 'visao' | 'chamada' | 'notas' | 'planejamento' | 'grupos' | 'avaliacao' | 'portfolio' | 'historico' | 'relatorios';
 const OBS_TAG: Record<Observation['tag'], string> = { avanco: 'Avanço', duvida: 'Dúvida', colaboracao: 'Colaboração', apoio: 'Precisa de apoio', outro: 'Outro' };
 const SELF = ['Entendi o objetivo da aula', 'Consegui explicar meu raciocínio', 'Colaborei com meu grupo'];
 const SELF_LEVELS = ['Ainda não', 'Um pouco', 'Quase', 'Sim!'];
@@ -90,6 +92,7 @@ function Groups({ t }: { t: Turma }) {
         <ul className="clean stack-sm">
           {t.students.map((st) => (
             <li key={st.id} className="row nowrap list-item" style={{ margin: 0 }}>
+              <NumeroInput t={t} sid={st.id} />
               <span className="grow">{st.displayName}</span>
               <select className="input" style={{ width: 'auto' }} aria-label={`Grupo de ${st.displayName}`} value={groupOf(st.id)} onChange={(e) => assign(st.id, e.target.value)}>
                 <option value="">Sem grupo</option>{t.groups.map((g) => <option key={g.id} value={g.id}>{g.name}</option>)}
@@ -311,11 +314,21 @@ export default function ClassPage() {
       {t.demo && <Notice>Lista de estudantes demonstrativa (nomes fictícios). Os registros que você fizer, porém, são reais e ficam salvos neste navegador.</Notice>}
       <Tabs<Tab> label="Seções da turma" value={tab} onChange={(v) => setParams({ aba: v })} items={[
         { id: 'visao', label: 'Acompanhamento', icon: <BarChart3 size={16} /> },
+        { id: 'chamada', label: 'Chamada', icon: <CalendarCheck size={16} /> },
+        { id: 'notas', label: 'Notas', icon: <GraduationCap size={16} /> },
+        { id: 'planejamento', label: 'Atividades, desafios e provas', icon: <ClipboardList size={16} /> },
         { id: 'grupos', label: 'Estudantes e grupos', icon: <Users size={16} /> },
         { id: 'avaliacao', label: 'Avaliação formativa', icon: <ClipboardCheck size={16} /> },
         { id: 'portfolio', label: 'Portfólio', icon: <FolderOpen size={16} /> },
+        { id: 'historico', label: 'Histórico', icon: <History size={16} /> },
+        { id: 'relatorios', label: 'Relatórios', icon: <FileBarChart size={16} /> },
       ]} />
       {tab === 'visao' && <Overview t={t} />}
+      {tab === 'chamada' && <ChamadaTab key={t.id} t={t} />}
+      {tab === 'notas' && <NotasTab t={t} />}
+      {tab === 'planejamento' && <PlanejamentoTab t={t} />}
+      {tab === 'historico' && <HistoricoTab t={t} />}
+      {tab === 'relatorios' && <RelatoriosTab t={t} />}
       {tab === 'grupos' && <Groups t={t} />}
       {tab === 'avaliacao' && <Assessment t={t} lessonId={params.get('aula') ?? undefined} />}
       {tab === 'portfolio' && <Portfolio t={t} />}
