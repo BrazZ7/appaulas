@@ -3,8 +3,8 @@
  * Compra aprovada → cria a conta e envia o convite por e-mail ao comprador.
  * Cancelamento, reembolso, chargeback e pausa → bloqueia o acesso. Atraso → mantém, marcado como atrasado.
  */
-import { processarWebhook } from './_lib/cakto';
-import { adminSupabase, env, supabaseAdmin } from './_lib/supabase-admin';
+import { processarWebhook } from './_lib/cakto.js';
+import { adminSupabase, env, supabaseAdmin } from './_lib/supabase-admin.js';
 
 export async function POST(request: Request): Promise<Response> {
   const corpoCru = await request.text();

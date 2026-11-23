@@ -4,7 +4,7 @@
  *        { acao: 'reenviar', email }          → reenvia o e-mail para definir senha
  * Exige o token de sessão de um superadmin no header Authorization: Bearer <token>.
  */
-import { adminSupabase, siteUrl, supabaseAdmin } from './_lib/supabase-admin';
+import { adminSupabase, siteUrl, supabaseAdmin } from './_lib/supabase-admin.js';
 
 export async function POST(request: Request): Promise<Response> {
   try {

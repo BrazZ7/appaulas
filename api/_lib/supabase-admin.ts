@@ -1,6 +1,6 @@
 /** Cliente Supabase com a chave secreta — usado SOMENTE nas funções do servidor (/api). */
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import type { Admin } from './cakto';
+import type { Admin } from './cakto.js';
 
 export function env(nome: string): string {
   return (process.env[nome] ?? '').trim();
