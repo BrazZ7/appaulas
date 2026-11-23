@@ -71,7 +71,11 @@ export interface AppState {
   diarioConfig: { mediaMinima: number; freqMinima: number };
   /** Provas criadas pelo professor (as prontas ficam no acervo). */
   provas: Prova[];
+  /** Progresso nos desafios do professor (formação). */
+  desafiosProfessor: Record<string, DesafioProfessorProgresso>;
 }
+
+export interface DesafioProfessorProgresso { checks: boolean[]; registro: string; reflexao: string; startedAt: string; concluidoAt?: string }
 
 /** Chave do armazenamento local; com login, cada conta tem a sua (aulaviva:v1:<id>). */
 let KEY = 'aulaviva:v1';
@@ -324,6 +328,14 @@ export const actions = {
   saveProva(p: Prova) {
     const v = { ...p, pronta: false, updatedAt: now() };
     store.update((s) => ({ ...s, provas: s.provas.some((x) => x.id === v.id) ? s.provas.map((x) => (x.id === v.id ? v : x)) : [v, ...s.provas] }));
+  },
+  setDesafioProfessor(id: string, p: Partial<DesafioProfessorProgresso> | null) {
+    store.update((s) => {
+      const all = { ...s.desafiosProfessor };
+      if (p === null) delete all[id];
+      else all[id] = { ...(all[id] ?? { checks: [], registro: '', reflexao: '', startedAt: now() }), ...p };
+      return { ...s, desafiosProfessor: all };
+    });
   },
   deleteProva(id: string) {
     store.update((s) => ({ ...s, provas: s.provas.filter((p) => p.id !== id) }));

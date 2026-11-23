@@ -73,5 +73,6 @@ export function seedState(): AppState {
     ],
     diarioConfig: { mediaMinima: 6, freqMinima: 75 },
     provas: [],
+    desafiosProfessor: {},
   };
 }

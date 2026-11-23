@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { ArrowRight, CheckCircle2, ChevronLeft, CircleAlert, CircleDot, Clock, GraduationCap, NotebookPen, Printer, RotateCcw, User } from 'lucide-react';
 import { Art } from '../components/Art';
 import { PageHead, minutes } from '../components/ui';
+import { DesafiosProfessorLista } from './DesafiosProfessor';
 import { MICRO_IMMERSIONS } from '../content';
 import { actions, now, useApp } from '../store/store';
 
@@ -36,6 +37,7 @@ export default function Training() {
           return ready ? <Link key={t.id} to={`/formacao/${t.id}`} className="card-link">{body}</Link> : <div key={t.id} className="card-link card-disabled">{body}</div>;
         })}
       </div>
+      <DesafiosProfessorLista />
     </div>
   );
 }

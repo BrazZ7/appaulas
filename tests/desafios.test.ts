@@ -36,3 +36,16 @@ describe('desafios, roteiros e projetos', () => {
     for (const p of d.passos) expect(r).toContain(p.titulo);
   });
 });
+
+import { DESAFIOS_PROFESSOR } from '../src/content/desafiosProfessor';
+describe('desafios do professor', () => {
+  it('ids únicos e conteúdo completo', () => {
+    expect(new Set(DESAFIOS_PROFESSOR.map((d) => d.id)).size).toBe(DESAFIOS_PROFESSOR.length);
+    expect(DESAFIOS_PROFESSOR.length).toBeGreaterThanOrEqual(10);
+    for (const d of DESAFIOS_PROFESSOR) {
+      expect(d.passos.length, d.id).toBeGreaterThanOrEqual(3);
+      expect(d.evidencias.length, d.id).toBeGreaterThan(0);
+      expect(d.reflexao.length, d.id).toBeGreaterThan(0);
+    }
+  });
+});

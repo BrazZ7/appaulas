@@ -1,13 +1,21 @@
-import { LESSONS } from './lessons';
+import { LESSONS as LESSONS_BASE } from './lessons';
+import { LESSONS_EXTRA } from './lessons-extra';
 import { STORIES } from './stories';
-import { GAME_ACTIVITIES, PRESENTIAL_GAMES } from './games';
-import { IMMERSIONS } from './immersions';
+import { GAME_ACTIVITIES as GAMES_BASE, PRESENTIAL_GAMES as PRESENTIAL_BASE } from './games';
+import { GAME_ACTIVITIES_EXTRA, PRESENTIAL_GAMES_EXTRA } from './games-extra';
+import { IMMERSIONS as IMMERSIONS_BASE } from './immersions';
+import { IMMERSIONS_EXTRA } from './immersions-extra';
 import { MICRO_IMMERSIONS } from './training';
 import { PROJECTS } from './project';
 import { THEME_DATES } from './calendar';
 import { SUBJECTS, SUBJECT_MAP } from './subjects';
 import type { Lesson, ResourceRef, SubjectId } from '../types/models';
 import { linkGames, linkImmersions, linkStories } from './art-links';
+
+const LESSONS = [...LESSONS_BASE, ...LESSONS_EXTRA];
+const GAME_ACTIVITIES = [...GAMES_BASE, ...GAME_ACTIVITIES_EXTRA];
+const PRESENTIAL_GAMES = [...PRESENTIAL_BASE, ...PRESENTIAL_GAMES_EXTRA];
+const IMMERSIONS = [...IMMERSIONS_BASE, ...IMMERSIONS_EXTRA];
 
 linkStories(STORIES);
 linkImmersions(IMMERSIONS);
