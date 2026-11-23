@@ -10,6 +10,7 @@ import { useAuth } from '../lib/auth';
 import { buildIndex, search } from '../content';
 import { ROLE_LABEL } from '../store/permissions';
 import { Modal, Toasts } from './ui';
+import { SyncBadge } from './SyncStatus';
 import type { Role } from '../types/models';
 
 export function Logo({ size = 40 }: { size?: number }) {
@@ -247,6 +248,7 @@ export function Layout() {
               </select>
             </label>
           )}
+          <SyncBadge />
           {role === 'professor' && (
             <NavLink to="/calendario" className="btn icon ghost hide-mobile" aria-label={`Agenda: ${todayCount} aula(s) hoje`} title="Agenda de hoje" style={{ position: 'relative' }}>
               <Bell />

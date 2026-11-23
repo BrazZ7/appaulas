@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import { Accessibility, Captions, Contrast, Database, Download, Leaf, Monitor, Move, ShieldCheck, Sparkles, Type, Upload } from 'lucide-react';
 import { Notice, PageHead, Switch, toast } from '../components/ui';
+import { SyncPainel } from '../components/SyncStatus';
+import { authEnabled } from '../lib/auth';
 import { download } from '../lib/files';
 import { actions, store, useApp } from '../store/store';
 import { ROLE_LABEL } from '../store/permissions';
@@ -35,7 +37,7 @@ export default function SettingsPage() {
         </section>
         <section className="panel stack-sm">
           <div className="panel-title"><Database /><h2 style={{ fontSize: '1.2rem' }}>Seus dados</h2></div>
-          <p className="small">Tudo fica salvo neste navegador (localStorage; vídeos no IndexedDB). Limpar os dados do navegador apaga o conteúdo — faça backups.</p>
+          {authEnabled ? <SyncPainel /> : <p className="small">Tudo fica salvo neste navegador (localStorage; vídeos no IndexedDB). Limpar os dados do navegador apaga o conteúdo — faça backups.</p>}
           {store.persistFailed() && <Notice>O navegador recusou salvar (espaço cheio ou modo privado). As mudanças podem se perder ao recarregar.</Notice>}
           <div className="row">
             <button className="btn" onClick={() => download(`aulaviva-backup-${new Date().toISOString().slice(0, 10)}.json`, store.exportJson(), 'application/json')}><Download /> Exportar backup</button>

@@ -613,3 +613,4 @@ html:not(.print-color) .scene-pair img {filter:none}
 .roteiro-fala { border-left: 4px solid var(--accent, #2ee6d6); padding: 4px 10px; margin: 6px 0; }
 .roteiro-fala b { text-transform: uppercase; font-size: .85em; letter-spacing: .04em; }
 @media print { .passo-print { break-inside: avoid; display: grid; grid-template-columns: 150px 1fr; gap: 12px; margin-bottom: 12px; } }
+.spin { animation: an-spin 1s linear infinite; }

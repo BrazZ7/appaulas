@@ -1,4 +1,18 @@
-/** Armazenamento de arquivos (vídeos, legendas, imagens) no IndexedDB deste navegador. */
+/**
+ * Armazenamento de arquivos (vídeos, legendas, imagens) no IndexedDB deste navegador.
+ * Com login ativo, a sincronização registra um adaptador de nuvem: os arquivos também vão para o
+ * Supabase Storage e são baixados quando faltam neste aparelho.
+ */
+
+export interface NuvemArquivos {
+  enviar(id: string, blob: Blob): Promise<void>;
+  baixar(id: string): Promise<Blob | undefined>;
+  apagar(id: string): Promise<void>;
+}
+let nuvem: NuvemArquivos | null = null;
+export function setNuvemArquivos(n: NuvemArquivos | null) { nuvem = n; }
+/** Arquivos maiores que isto ficam só neste aparelho (limite do plano gratuito do armazenamento). */
+export const LIMITE_NUVEM = 10 * 1024 * 1024;
 
 const DB = 'aulaviva-files';
 const STORE = 'files';
@@ -13,6 +27,11 @@ function open(): Promise<IDBDatabase> {
 }
 
 export async function putFile(id: string, blob: Blob): Promise<void> {
+  await putLocal(id, blob);
+  if (nuvem && blob.size <= LIMITE_NUVEM) nuvem.enviar(id, blob).catch(() => { /* fica local; tenta de novo na próxima sincronização */ });
+}
+
+async function putLocal(id: string, blob: Blob): Promise<void> {
   const db = await open();
   await new Promise<void>((resolve, reject) => {
     const tx = db.transaction(STORE, 'readwrite');
@@ -23,6 +42,14 @@ export async function putFile(id: string, blob: Blob): Promise<void> {
 }
 
 export async function getFile(id: string): Promise<Blob | undefined> {
+  const local = await getLocal(id);
+  if (local || !nuvem) return local;
+  const remoto = await nuvem.baixar(id).catch(() => undefined);
+  if (remoto) await putLocal(id, remoto).catch(() => {});
+  return remoto;
+}
+
+async function getLocal(id: string): Promise<Blob | undefined> {
   const db = await open();
   return new Promise((resolve, reject) => {
     const req = db.transaction(STORE).objectStore(STORE).get(id);
@@ -32,6 +59,7 @@ export async function getFile(id: string): Promise<Blob | undefined> {
 }
 
 export async function deleteFile(id: string): Promise<void> {
+  if (nuvem) nuvem.apagar(id).catch(() => {});
   const db = await open();
   await new Promise<void>((resolve, reject) => {
     const tx = db.transaction(STORE, 'readwrite');

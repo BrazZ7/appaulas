@@ -87,3 +87,39 @@ create policy "eventos: superadmin lê" on public.cakto_eventos
 
 -- Usuários comuns não alteram o próprio perfil (status/role vêm só da Cakto ou do superadmin).
 -- Inserções e alterações do webhook usam a chave secreta no servidor, que ignora o RLS.
+
+-- ───────── Sincronização dos dados do professor (diário, provas, planejamentos…) ─────────
+-- Um registro por conta com todo o estado do app em JSON. `versao` evita que um aparelho
+-- sobrescreva sem saber uma alteração feita em outro (controle otimista).
+create table if not exists public.dados_professor (
+  user_id uuid primary key references auth.users (id) on delete cascade,
+  dados jsonb not null,
+  versao bigint not null default 1,
+  atualizado_em timestamptz not null default now()
+);
+alter table public.dados_professor enable row level security;
+
+drop policy if exists "dados: dono lê" on public.dados_professor;
+create policy "dados: dono lê" on public.dados_professor for select using (user_id = auth.uid());
+drop policy if exists "dados: dono cria" on public.dados_professor;
+create policy "dados: dono cria" on public.dados_professor for insert with check (user_id = auth.uid());
+drop policy if exists "dados: dono altera" on public.dados_professor;
+create policy "dados: dono altera" on public.dados_professor for update using (user_id = auth.uid()) with check (user_id = auth.uid());
+
+-- Arquivos enviados (imagens das provas, legendas, vídeos curtos): bucket privado, uma pasta por conta.
+insert into storage.buckets (id, name, public, file_size_limit)
+values ('arquivos', 'arquivos', false, 10485760)
+on conflict (id) do nothing;
+
+drop policy if exists "arquivos: dono lê" on storage.objects;
+create policy "arquivos: dono lê" on storage.objects for select to authenticated
+  using (bucket_id = 'arquivos' and (storage.foldername(name))[1] = auth.uid()::text);
+drop policy if exists "arquivos: dono envia" on storage.objects;
+create policy "arquivos: dono envia" on storage.objects for insert to authenticated
+  with check (bucket_id = 'arquivos' and (storage.foldername(name))[1] = auth.uid()::text);
+drop policy if exists "arquivos: dono atualiza" on storage.objects;
+create policy "arquivos: dono atualiza" on storage.objects for update to authenticated
+  using (bucket_id = 'arquivos' and (storage.foldername(name))[1] = auth.uid()::text);
+drop policy if exists "arquivos: dono apaga" on storage.objects;
+create policy "arquivos: dono apaga" on storage.objects for delete to authenticated
+  using (bucket_id = 'arquivos' and (storage.foldername(name))[1] = auth.uid()::text);

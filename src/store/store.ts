@@ -80,12 +80,18 @@ export interface DesafioProfessorProgresso { checks: boolean[]; registro: string
 /** Chave do armazenamento local; com login, cada conta tem a sua (aulaviva:v1:<id>). */
 let KEY = 'aulaviva:v1';
 
+/** Completa um estado salvo (de outra versão do app ou da nuvem) com os campos novos. */
+export function normalizar(parsed: AppState): AppState {
+  const seed = seedState();
+  return { ...seed, ...parsed, settings: { ...seed.settings, ...parsed.settings }, diarioConfig: { ...seed.diarioConfig, ...parsed.diarioConfig } };
+}
+
 function load(): AppState {
   try {
     const raw = localStorage.getItem(KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as AppState;
-      if (parsed.version === 1) return { ...seedState(), ...parsed, settings: { ...seedState().settings, ...parsed.settings }, diarioConfig: { ...seedState().diarioConfig, ...parsed.diarioConfig } };
+      if (parsed.version === 1) return normalizar(parsed);
     }
   } catch {
     /* armazenamento indisponível: segue com estado em memória */
@@ -132,6 +138,14 @@ export const store = {
     if (nome) state = { ...state, user: { ...state.user, displayName: nome.split(' ')[0] } };
     listeners.forEach((l) => l());
   },
+  /** Substitui o estado inteiro (ex.: dados vindos da nuvem) e salva neste navegador. */
+  replace(next: AppState) {
+    state = normalizar(next);
+    persist();
+    listeners.forEach((l) => l());
+  },
+  /** Chave do armazenamento local em uso (por conta). */
+  scopeKey: () => KEY,
   exportJson: () => JSON.stringify(state, null, 2),
   importJson(text: string) {
     const parsed = JSON.parse(text) as AppState;

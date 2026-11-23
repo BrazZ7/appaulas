@@ -3,6 +3,7 @@ import type { Session } from '@supabase/supabase-js';
 import { AlertTriangle, KeyRound, LogIn, LogOut, Mail, ShoppingCart } from 'lucide-react';
 import { AuthContext, CHECKOUT_URL, authEnabled, supabase, temAcesso, type Perfil } from '../lib/auth';
 import { store } from '../store/store';
+import { enviarPendencias, iniciarSync, pararSync } from '../lib/sync';
 import { Logo } from './Layout';
 
 type Modo = 'carregando' | 'entrar' | 'definir-senha' | 'app';
@@ -130,6 +131,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
     const p = (data as Perfil | null) ?? null;
     setPerfil(p);
     store.setScope(s.user.id, p?.nome);
+    void iniciarSync(s.user.id);
     return p;
   }, []);
 
@@ -148,14 +150,14 @@ export function AuthGate({ children }: { children: ReactNode }) {
     });
     const { data: sub } = supabase!.auth.onAuthStateChange(async (evento, s) => {
       if (evento === 'PASSWORD_RECOVERY') { await carregarPerfil(s); setModo('definir-senha'); return; }
-      if (evento === 'SIGNED_OUT') { setSession(null); setPerfil(null); setModo('entrar'); return; }
+      if (evento === 'SIGNED_OUT') { pararSync(); setSession(null); setPerfil(null); setModo('entrar'); return; }
       if (evento === 'SIGNED_IN') { await carregarPerfil(s); setModo((m) => (m === 'definir-senha' ? m : 'app')); }
     });
     return () => { vivo = false; sub.subscription.unsubscribe(); };
   }, [carregarPerfil, porLink]);
 
   if (!authEnabled) return <>{children}</>;
-  const sair = async () => { await supabase!.auth.signOut(); };
+  const sair = async () => { await enviarPendencias().catch(() => {}); await supabase!.auth.signOut(); };
 
   if (modo === 'carregando') return <Tela><p className="muted">Carregando…</p></Tela>;
   if (modo === 'entrar' || !session) return <Entrar />;
