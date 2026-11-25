@@ -44,12 +44,26 @@ export function adminSupabase(sb: SupabaseClient): Admin {
         data: { nome: nome ?? undefined },
         redirectTo: `${siteUrl()}/?acesso=convite`,
       });
-      if (error || !data.user) throw new Error(`convidar: ${error?.message ?? 'sem usuário'}`);
-      return data.user.id;
+      if (!error && data.user) return data.user.id;
+      // Se o e-mail de convite falhar (SMTP não configurado ou limite de envio), cria a conta mesmo assim:
+      // o acesso fica registrado e a pessoa entra depois pelo "Esqueci minha senha".
+      console.error('convite falhou, criando conta sem e-mail:', error?.message);
+      const criado = await sb.auth.admin.createUser({ email, email_confirm: true, user_metadata: { nome: nome ?? undefined } });
+      if (criado.error || !criado.data.user) throw new Error(`convidar: ${error?.message ?? ''} / criar: ${criado.error?.message ?? 'sem usuário'}`);
+      return criado.data.user.id;
     },
     async atualizarPerfil(id, dados) {
       const { error } = await sb.from('profiles').update(dados).eq('id', id);
       if (error) throw new Error(`atualizar perfil: ${error.message}`);
+    },
+    async salvarAcesso(userId, produto, dados) {
+      const { error } = await sb.from('acessos').upsert({ user_id: userId, produto, ...dados }, { onConflict: 'user_id,produto' });
+      if (error) throw new Error(`salvar acesso: ${error.message}`);
+    },
+    async statusDosAcessos(userId) {
+      const { data, error } = await sb.from('acessos').select('status').eq('user_id', userId);
+      if (error) throw new Error(`ler acessos: ${error.message}`);
+      return (data ?? []).map((r) => r.status as 'ativo' | 'atrasado' | 'inativo');
     },
   };
 }

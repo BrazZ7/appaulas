@@ -15,6 +15,7 @@ export async function POST(request: Request): Promise<Response> {
       {
         segredo: env('CAKTO_WEBHOOK_SECRET'),
         produtos: env('CAKTO_PRODUCT_IDS').split(',').map((s) => s.trim()).filter(Boolean),
+        tudo: env('CAKTO_PRODUTO_TUDO').split(',').map((s) => s.trim()).filter(Boolean),
       },
       adminSupabase(supabaseAdmin()),
     );

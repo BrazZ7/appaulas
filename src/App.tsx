@@ -3,6 +3,7 @@ import { createHashRouter, Link, RouterProvider } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { AuthGate } from './components/AuthGate';
 import Home from './pages/Home';
+import { InicioOuFamilia, SoSala } from './pages/Familia';
 
 const Library = lazy(() => import('./pages/Library'));
 const SubjectPage = lazy(() => import('./pages/Library').then((m) => ({ default: m.SubjectPage })));
@@ -42,6 +43,8 @@ const DesafioProfessorPage = lazy(() => import('./pages/DesafiosProfessor').then
 const DesafioPage = lazy(() => import('./pages/Desafios').then((m) => ({ default: m.DesafioPage })));
 const ProvaEditor = lazy(() => import('./pages/Provas').then((m) => ({ default: m.ProvaEditor })));
 const ProvaPrint = lazy(() => import('./pages/Provas').then((m) => ({ default: m.ProvaPrint })));
+const FamiliaHome = lazy(() => import('./pages/Familia'));
+const AreaPage = lazy(() => import('./pages/Familia').then((m) => ({ default: m.AreaPage })));
 
 function NotFound() {
   return (
@@ -53,7 +56,10 @@ function NotFound() {
   );
 }
 
-const wrap = (el: React.ReactNode) => <Suspense fallback={<div className="muted" style={{ padding: 30 }}>Carregando…</div>}>{el}</Suspense>;
+const carregando = <div className="muted" style={{ padding: 30 }}>Carregando…</div>;
+/** Telas do professor: só abrem para quem tem a Sala de Aula (as da família ficam livres). */
+const wrap = (el: React.ReactNode) => <SoSala><Suspense fallback={carregando}>{el}</Suspense></SoSala>;
+const livre = (el: React.ReactNode) => <Suspense fallback={carregando}>{el}</Suspense>;
 
 const router = createHashRouter([
   {
@@ -61,7 +67,9 @@ const router = createHashRouter([
     element: <Layout />,
     errorElement: <NotFound />,
     children: [
-      { index: true, element: <Home /> },
+      { index: true, element: <InicioOuFamilia><Home /></InicioOuFamilia> },
+      { path: 'familia', element: livre(<FamiliaHome />) },
+      { path: 'familia/:id', element: livre(<AreaPage />) },
       { path: 'materias', element: wrap(<Library />) },
       { path: 'materias/:id', element: wrap(<SubjectPage />) },
       { path: 'busca', element: wrap(<SearchPage />) },
@@ -97,11 +105,11 @@ const router = createHashRouter([
       { path: 'turmas/:id', element: wrap(<ClassPage />) },
       { path: 'calendario', element: wrap(<Calendar />) },
       { path: 'projetos/:id', element: wrap(<ProjectPage />) },
-      { path: 'ajustes', element: wrap(<SettingsPage />) },
+      { path: 'ajustes', element: livre(<SettingsPage />) },
       { path: 'aluno', element: wrap(<Student />) },
       { path: 'aluno/portfolio', element: wrap(<StudentPortfolio />) },
       { path: 'coordenacao', element: wrap(<Coordination />) },
-      { path: 'admin', element: wrap(<Admin />) },
+      { path: 'admin', element: livre(<Admin />) },
       { path: '*', element: <NotFound /> },
     ],
   },

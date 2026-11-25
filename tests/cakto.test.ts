@@ -9,14 +9,19 @@ function bancoFalso() {
   const perfis = new Map<string, PerfilResumo & { email: string; dados: Record<string, unknown> }>();
   const eventos = new Map<string, boolean>();
   const convites: string[] = [];
+  const acessos = new Map<string, { areas: string[]; status: 'ativo' | 'atrasado' | 'inativo' }>();
   const admin: Admin = {
+    async salvarAcesso(userId, produto, dados) { acessos.set(`${userId}|${produto}`, { areas: dados.areas, status: dados.status }); },
+    async statusDosAcessos(userId) { return [...acessos.entries()].filter(([k]) => k.startsWith(`${userId}|`)).map(([, v]) => v.status); },
     async registrarEvento(pedido, evento) { const k = `${pedido}|${evento}`; if (eventos.get(k)) return false; eventos.set(k, false); return true; },
     async finalizarEvento(pedido, evento) { eventos.set(`${pedido}|${evento}`, true); },
     async buscarPerfil(email) { return [...perfis.values()].find((p) => p.email === email) ?? null; },
     async convidar(email) { const id = `u${perfis.size + 1}`; perfis.set(id, { id, email, role: 'assinante', status: 'inativo', dados: {} }); convites.push(email); return id; },
     async atualizarPerfil(id, dados) { const p = perfis.get(id)!; Object.assign(p.dados, dados); if (dados.status) p.status = String(dados.status); },
   };
-  return { admin, perfis, convites };
+  /** Áreas liberadas (acessos ativos ou atrasados) de uma conta. */
+  const areas = (userId: string) => [...acessos.entries()].filter(([k, v]) => k.startsWith(`${userId}|`) && v.status !== 'inativo').flatMap(([, v]) => v.areas).sort();
+  return { admin, perfis, convites, acessos, areas };
 }
 
 const pedido = (id: string, email: string, extra: Record<string, unknown> = {}) => ({
@@ -31,7 +36,11 @@ const assinar = (raw: string, ts = Math.floor(Date.now() / 1000)) => {
   const sig = 'v1=' + crypto.createHmac('sha256', SEGREDO).update(`${ts}.`).update(raw).digest('hex');
   return { get: (n: string) => (n === 'x-cakto-timestamp' ? String(ts) : n === 'x-cakto-signature' ? sig : null) };
 };
-const cfg = { segredo: SEGREDO, produtos: [] as string[] };
+const cfg = { segredo: SEGREDO, produtos: ['42bruPi'], tudo: ['TUDO59'] };
+const KIT_FOCO = 'b287bb51-d915-4c45-81a3-21253c2b8f25';
+const PREMIUM = 'f2f25c1f-59d6-4b56-899a-0813e4bbc8d1';
+const PRANCHAS = '329928de-c481-4eb3-9273-15a1579c6adc';
+const comProduto = (id: string, email: string, prod: string) => pedido(id, email, { product: { id: prod, name: 'Kit' }, subscription: null });
 
 describe('webhook da Cakto', () => {
   it('compra aprovada cria a conta, ativa e envia o convite ao e-mail do comprador', async () => {
@@ -101,6 +110,38 @@ describe('webhook da Cakto', () => {
     const r = await processarWebhook(corpo('purchase_approved', [pedido('p1', 'a@b.com'), outro]), semHeaders, { segredo: SEGREDO, produtos: ['42bruPi'] }, db.admin);
     expect(r.status).toBe(200);
     expect(db.convites).toEqual(['a@b.com']);
+  });
+
+  it('cada kit libera só a sua área; o Premium libera foco, emoções e colorir', async () => {
+    const db = bancoFalso();
+    await processarWebhook(corpo('purchase_approved', comProduto('k1', 'mae@x.com', KIT_FOCO)), semHeaders, cfg, db.admin);
+    const id = [...db.perfis.values()][0].id;
+    expect(db.areas(id)).toEqual(['foco']);
+    await processarWebhook(corpo('purchase_approved', comProduto('k2', 'mae@x.com', PREMIUM)), semHeaders, cfg, db.admin);
+    expect([...new Set(db.areas(id))]).toEqual(['colorir', 'emocoes', 'foco']);
+    expect(db.convites).toEqual(['mae@x.com']); // a segunda compra não cria outra conta
+  });
+
+  it('reembolso de um kit bloqueia só aquela área e mantém a conta ativa', async () => {
+    const db = bancoFalso();
+    await processarWebhook(corpo('purchase_approved', comProduto('k1', 'mae@x.com', KIT_FOCO)), semHeaders, cfg, db.admin);
+    await processarWebhook(corpo('purchase_approved', comProduto('k2', 'mae@x.com', PRANCHAS)), semHeaders, cfg, db.admin);
+    const r = await processarWebhook(corpo('refund', comProduto('k3', 'mae@x.com', PRANCHAS)), semHeaders, cfg, db.admin);
+    const p = [...db.perfis.values()][0];
+    expect(db.areas(p.id)).toEqual(['foco']);
+    expect(p.status).toBe('ativo');
+    expect(r.corpo.detalhes?.[0]).toMatch(/outras áreas continuam/);
+  });
+
+  it('o plano Tudo Liberado libera tudo e, ao cancelar, os kits comprados continuam', async () => {
+    const db = bancoFalso();
+    await processarWebhook(corpo('purchase_approved', comProduto('k1', 'mae@x.com', KIT_FOCO)), semHeaders, cfg, db.admin);
+    await processarWebhook(corpo('purchase_approved', pedido('s1', 'mae@x.com', { product: { id: 'TUDO59' } })), semHeaders, cfg, db.admin);
+    const id = [...db.perfis.values()][0].id;
+    expect(db.areas(id)).toEqual(['foco', 'tudo']);
+    await processarWebhook(corpo('subscription_canceled', pedido('s2', 'mae@x.com', { product: { id: 'TUDO59' } })), semHeaders, cfg, db.admin);
+    expect(db.areas(id)).toEqual(['foco']);
+    expect(db.perfis.get(id)!.status).toBe('ativo');
   });
 
   it('eventos sem efeito (pix gerado, abandono) são ignorados com 200', async () => {

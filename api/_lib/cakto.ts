@@ -6,6 +6,7 @@
  *  - responder 2xx em até 8 s; o mesmo evento pode chegar mais de uma vez (deduplicar por data.id + evento)
  */
 import crypto from 'node:crypto';
+import { areasDoProduto } from './areas.js';
 
 export type Acao = 'ativar' | 'atrasar' | 'desativar' | 'ignorar';
 
@@ -57,12 +58,27 @@ export interface Admin {
   buscarPerfil(email: string): Promise<PerfilResumo | null>;
   convidar(email: string, nome: string | null): Promise<string>; // cria o usuário e envia o e-mail de convite; devolve o id
   atualizarPerfil(id: string, dados: Record<string, unknown>): Promise<void>;
+  /** Grava (ou atualiza) o acesso da conta a um produto: quais áreas ele libera e se está ativo. */
+  salvarAcesso(userId: string, produto: string, dados: { areas: string[]; status: StatusAcesso; cakto_pedido: string; cakto_assinatura: string | null }): Promise<void>;
+  /** Status de todos os acessos da conta, para calcular o status geral. */
+  statusDosAcessos(userId: string): Promise<StatusAcesso[]>;
 }
+
+export type StatusAcesso = 'ativo' | 'atrasado' | 'inativo';
 
 export interface Config {
   segredo: string;
-  /** ids ou short_ids de produto aceitos (vazio = todos) */
+  /** ids de produto que liberam tudo (plano Tudo Liberado) */
+  tudo?: string[];
+  /** ids de produto extras tratados como a plataforma do professor ("sala") */
   produtos: string[];
+}
+
+/** Status geral da conta: ativo se algum acesso está ativo; atrasado se só há atrasados; senão inativo. */
+export function statusGeral(lista: StatusAcesso[]): StatusAcesso {
+  if (lista.includes('ativo')) return 'ativo';
+  if (lista.includes('atrasado')) return 'atrasado';
+  return 'inativo';
 }
 
 export interface Resultado { status: number; corpo: { ok: boolean; mensagem: string; detalhes?: string[] } }
@@ -94,9 +110,8 @@ export async function processarWebhook(corpoCru: string, headers: { get(n: strin
 export async function processarPedido(evento: string, acao: Acao, p: Pedido, cfg: Config, admin: Admin): Promise<string> {
   const email = p.customer?.email?.trim().toLowerCase() || null;
   if (!p.id) return 'pedido sem id';
-  if (cfg.produtos.length && !cfg.produtos.includes(p.product?.id ?? '') && !cfg.produtos.includes(p.product?.short_id ?? '')) {
-    return `${p.id}: produto fora do Ensinaê, ignorado`;
-  }
+  const areas = areasDoProduto(p.product, { tudo: cfg.tudo ?? [], sala: cfg.produtos });
+  if (!areas) return `${p.id}: produto fora do Ensinaê, ignorado`;
   const novo = await admin.registrarEvento(p.id, evento, email, p);
   if (!novo) return `${p.id}: ${evento} já processado`;
   if (!email) {
@@ -104,36 +119,44 @@ export async function processarPedido(evento: string, acao: Acao, p: Pedido, cfg
     return `${p.id}: sem e-mail`;
   }
 
-  const resultado = await aplicar(acao, evento, p, email, admin);
+  const resultado = await aplicar(acao, evento, p, email, areas, admin);
   await admin.finalizarEvento(p.id, evento, resultado);
   return `${p.id}: ${resultado}`;
 }
 
-async function aplicar(acao: Acao, evento: string, p: Pedido, email: string, admin: Admin): Promise<string> {
+async function aplicar(acao: Acao, evento: string, p: Pedido, email: string, areas: string[], admin: Admin): Promise<string> {
   const perfil = await admin.buscarPerfil(email);
+  const produto = p.product?.id ?? p.product?.short_id ?? 'desconhecido';
+  const assinatura = p.subscription?.id != null ? String(p.subscription.id) : null;
   const dadosCakto = {
     ultimo_evento: evento,
     cakto_pedido: p.id,
     cakto_produto: p.product?.short_id ?? p.product?.id ?? null,
-    cakto_assinatura: p.subscription?.id != null ? String(p.subscription.id) : null,
+    cakto_assinatura: assinatura,
   };
+  const rotulo = areas.join(', ');
 
   if (acao === 'ativar') {
-    if (perfil) {
-      await admin.atualizarPerfil(perfil.id, { ...dadosCakto, status: 'ativo' });
-      return perfil.status === 'ativo' ? 'acesso mantido' : 'acesso reativado';
+    let id = perfil?.id;
+    let criado = false;
+    if (!id) {
+      id = await admin.convidar(email, p.customer?.name ?? null);
+      criado = true;
     }
-    const id = await admin.convidar(email, p.customer?.name ?? null);
-    await admin.atualizarPerfil(id, { ...dadosCakto, status: 'ativo', origem: 'cakto', nome: p.customer?.name ?? null });
-    return 'conta criada e convite enviado';
+    await admin.salvarAcesso(id, produto, { areas, status: 'ativo', cakto_pedido: p.id, cakto_assinatura: assinatura });
+    if (perfil?.role === 'superadmin') return `superadmin: área ${rotulo} registrada`;
+    const geral = statusGeral(await admin.statusDosAcessos(id));
+    await admin.atualizarPerfil(id, criado ? { ...dadosCakto, status: geral, origem: 'cakto', nome: p.customer?.name ?? null } : { ...dadosCakto, status: geral });
+    if (criado) return `conta criada, área ${rotulo} liberada e convite enviado`;
+    return perfil?.status === 'ativo' ? `área ${rotulo} liberada (conta já ativa)` : `área ${rotulo} liberada e conta reativada`;
   }
 
   if (!perfil) return 'sem conta para alterar';
   if (perfil.role === 'superadmin') return 'superadmin não é alterado por eventos da Cakto';
-  if (acao === 'atrasar') {
-    await admin.atualizarPerfil(perfil.id, { ...dadosCakto, status: 'atrasado' });
-    return 'marcado como atrasado (acesso mantido)';
-  }
-  await admin.atualizarPerfil(perfil.id, { ...dadosCakto, status: 'inativo' });
-  return 'acesso bloqueado';
+  const novo: StatusAcesso = acao === 'atrasar' ? 'atrasado' : 'inativo';
+  await admin.salvarAcesso(perfil.id, produto, { areas, status: novo, cakto_pedido: p.id, cakto_assinatura: assinatura });
+  const geral = statusGeral(await admin.statusDosAcessos(perfil.id));
+  await admin.atualizarPerfil(perfil.id, { ...dadosCakto, status: geral });
+  if (acao === 'atrasar') return `área ${rotulo} marcada como atrasada (acesso mantido)`;
+  return geral === 'inativo' ? `área ${rotulo} bloqueada; conta sem acessos ativos` : `área ${rotulo} bloqueada; outras áreas continuam liberadas`;
 }

@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { AlertTriangle, KeyRound, LogIn, LogOut, Mail, ShoppingCart } from 'lucide-react';
-import { AuthContext, CHECKOUT_URL, authEnabled, supabase, temAcesso, type Perfil } from '../lib/auth';
+import { AuthContext, CHECKOUT_URL, authEnabled, calcularAreas, supabase, temAcesso, type Perfil } from '../lib/auth';
+import { TODAS_AS_AREAS } from '../content/familia';
 import { store } from '../store/store';
 import { enviarPendencias, iniciarSync, pararSync } from '../lib/sync';
 import { Logo } from './Layout';
@@ -122,18 +123,26 @@ export function AuthGate({ children }: { children: ReactNode }) {
   const [modo, setModo] = useState<Modo>('carregando');
   const [session, setSession] = useState<Session | null>(null);
   const [perfil, setPerfil] = useState<Perfil | null>(null);
+  const [areas, setAreas] = useState<string[]>([]);
   const [porLink] = useState(chegadaPorLink);
+
+  const lerAreas = useCallback(async (p: Perfil | null) => {
+    if (!p) { setAreas([]); return; }
+    const { data } = await supabase!.from('acessos').select('areas, status').eq('user_id', p.id);
+    setAreas(calcularAreas(p, (data ?? []) as { areas: string[]; status: string }[], TODAS_AS_AREAS));
+  }, []);
 
   const carregarPerfil = useCallback(async (s: Session | null) => {
     setSession(s);
-    if (!s) { setPerfil(null); return null; }
+    if (!s) { setPerfil(null); setAreas([]); return null; }
     const { data } = await supabase!.from('profiles').select('id, email, nome, role, status, origem').eq('id', s.user.id).maybeSingle();
     const p = (data as Perfil | null) ?? null;
     setPerfil(p);
+    await lerAreas(p);
     store.setScope(s.user.id, p?.nome);
     void iniciarSync(s.user.id);
     return p;
-  }, []);
+  }, [lerAreas]);
 
   useEffect(() => {
     if (!authEnabled) return;
@@ -165,7 +174,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
   if (!temAcesso(perfil)) return <SemAcesso perfil={perfil} sair={sair} />;
 
   return (
-    <AuthContext.Provider value={{ ativo: true, session, perfil, sair }}>
+    <AuthContext.Provider value={{ ativo: true, session, perfil, areas, sair, recarregarAreas: () => lerAreas(perfil) }}>
       {perfil?.status === 'atrasado' && perfil.role !== 'superadmin' && (
         <div className="notice" style={{ borderRadius: 0, justifyContent: 'center' }}>
           <AlertTriangle size={18} /> <span>Seu pagamento está em atraso. Regularize na Cakto para não perder o acesso.</span>
