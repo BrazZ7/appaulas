@@ -3,11 +3,12 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   Clapperboard, ChevronDown, Compass, Gamepad2, GraduationCap, House, Layers, Menu, Minimize, Search, Settings,
   Users, CalendarDays, NotebookPen, Library, Bell, Shield, LogOut,
-  FileCheck2, Trophy,
+  FileCheck2, Trophy, Heart, Sparkles, Puzzle, Lock,
 } from 'lucide-react';
 import { actions, useApp } from '../store/store';
-import { useAuth } from '../lib/auth';
+import { useAreas, useAuth } from '../lib/auth';
 import { buildIndex, search } from '../content';
+import { AREAS } from '../content/familia';
 import { ROLE_LABEL } from '../store/permissions';
 import { Modal, Toasts } from './ui';
 import { SyncBadge } from './SyncStatus';
@@ -51,7 +52,18 @@ const NAV_EXTRA = [
   { to: '/provas', label: 'Provas', icon: FileCheck2 },
   { to: '/calendario', label: 'Calendário', icon: CalendarDays },
   { to: '/formacao', label: 'Formação do professor', icon: GraduationCap },
+  { to: '/familia', label: 'Área Família', icon: Heart },
 ];
+/** Menu de quem só tem áreas da família (sem a Sala de Aula): início + áreas liberadas + Sala bloqueada. */
+function navFamilia(liberadas: string[]) {
+  const itens = AREAS.filter((a) => liberadas.includes(a.id)).slice(0, 7)
+    .map((a) => ({ to: `/familia/${a.id}`, label: a.titulo, icon: a.categoria === 'especial' ? Puzzle : Sparkles }));
+  return [
+    { to: '/familia', label: 'Minha área', icon: Heart, end: true },
+    ...itens,
+    { to: '/familia/sala', label: 'Sala de Aula', icon: Lock },
+  ];
+}
 const NAV_STUDENT = [
   { to: '/aluno', label: 'Minhas atividades', icon: House, end: true },
   { to: '/aluno/portfolio', label: 'Portfólio', icon: Library },
@@ -189,8 +201,9 @@ export function Layout() {
   const s = useApp();
   const loc = useLocation();
   const [more, setMore] = useState(false);
-  const role = s.user.role;
-  const nav = role === 'aluno' ? NAV_STUDENT : role === 'coordenacao' ? NAV_COORD : NAV_TEACHER;
+  const { familiaApenas, areas } = useAreas();
+  const role = familiaApenas ? 'familia' : s.user.role;
+  const nav = familiaApenas ? navFamilia(areas) : role === 'aluno' ? NAV_STUDENT : role === 'coordenacao' ? NAV_COORD : NAV_TEACHER;
   const turmas = s.turmas;
   useEffect(() => { window.scrollTo(0, 0); setMore(false); }, [loc.pathname]);
   const todayCount = s.agenda.filter((a) => a.date === new Date().toISOString().slice(0, 10)).length;
@@ -240,7 +253,7 @@ export function Layout() {
         <header className="topbar">
           <NavLink to="/" className="mobile-only" aria-label="Início"><Logo size={34} /></NavLink>
           <SearchBox />
-          {role !== 'aluno' && (
+          {role !== 'aluno' && role !== 'familia' && (
             <label className="hide-mobile" style={{ position: 'relative' }}>
               <span className="sr-only">Turma ativa</span>
               <select className="input" value={s.activeTurmaId} onChange={(e) => actions.setTurma(e.target.value)} style={{ minWidth: 150, fontWeight: 700 }}>
@@ -272,7 +285,7 @@ export function Layout() {
       </nav>
       <Modal open={more} onClose={() => setMore(false)} title="Mais">
         <div className="stack-sm">
-          {role !== 'aluno' && (
+          {role !== 'aluno' && role !== 'familia' && (
             <label className="field">
               <span>Turma ativa</span>
               <select className="input" value={s.activeTurmaId} onChange={(e) => actions.setTurma(e.target.value)}>
